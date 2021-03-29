@@ -715,12 +715,12 @@ app.use(express.static('pages'));
 app.use('/img/', express.static('img'));
 
 app.get('/api/food', (req, res) => {
-  res.json({ data: allFood });
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.json({ data: allFood });
 });
 app.get('/api/resources', (req, res) => {
-  res.json({ data: resources });
   res.setHeader('Access-Control-Allow-Origin', '*');
+  res.json({ data: resources });
 });
 
 const server = app.listen(port);
