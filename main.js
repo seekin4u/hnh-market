@@ -3,6 +3,7 @@ const express = require('express');
 const fs = require('fs');
 
 const app = express();
+const port = 5000;
 
 const paths = [];
 
@@ -713,7 +714,13 @@ fetch('https://hnhfood.vatsul.com/api/data/food-info2.json')
 app.use(express.static('pages'));
 app.use('/img/', express.static('img'));
 
-app.get('/api/food', (req, res) => res.json({ data: allFood }));
-app.get('/api/resources', (req, res) => res.json({ data: resources }));
+app.get('/api/food', (req, res) => {
+  res.json({ data: allFood });
+  res.setHeader('Access-Control-Allow-Origin', '*');
+});
+app.get('/api/resources', (req, res) => {
+  res.json({ data: resources });
+  res.setHeader('Access-Control-Allow-Origin', '*');
+});
 
-const server = app.listen(5000);
+const server = app.listen(port);
