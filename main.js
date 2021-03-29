@@ -715,11 +715,11 @@ app.use(express.static('pages'));
 app.use('/img/', express.static('img'));
 
 app.get('/api/food', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', 'http://139.177.178.41:5000');
   res.json({ data: allFood });
 });
 app.get('/api/resources', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Origin', 'http://139.177.178.41:5000');
   res.json({ data: resources });
 });
 
