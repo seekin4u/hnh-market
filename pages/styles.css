@@ -1,0 +1,108 @@
+body {
+  background-color: #252031;
+  color: #ddd;
+  font-family: Verdana, sans-serif;
+  font-size: 14px
+}
+
+.food-table {
+  border-spacing: 0;
+}
+
+.food-table>tbody>tr {
+  padding: 0;
+  margin: 0;
+}
+
+.food-table>tbody>tr>td {
+  padding: 0;
+  margin: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  text-align: center;
+}
+
+.food-table>tbody>tr>td.stat {
+  padding: 0 0.5em;
+  min-width: 2.2em;
+  font-weight: bold;
+}
+
+.food-table>tbody>tr>td>img {
+  vertical-align: middle;
+}
+
+.food-table>tbody>tr>td.img {
+  text-align: right;
+}
+
+.str {
+  color: #bd8682;
+}
+
+.agi {
+  color: #857fb8;
+}
+
+.int {
+  color: #8ab7b9;
+}
+
+.con {
+  color: #c485ae;
+}
+
+.per {
+  color: #e7b37c;
+}
+
+.cha {
+  color: #a9e4b8;
+}
+
+.dex {
+  color: #faf9b6;
+}
+
+.wil {
+  color: #dbf091;
+}
+
+.psy {
+  color: #c092f1;
+}
+
+.str>.db {
+  color: #bb544c;
+}
+
+.agi>.db {
+  color: #483cb8;
+}
+
+.int>.db {
+  color: #33afb6;
+}
+
+.con>.db {
+  color: #c73d97;
+}
+
+.per>.db {
+  color: #e98b26;
+}
+
+.cha>.db {
+  color: #27eb5b;
+}
+
+.dex>.db {
+  color: #f8f52d;
+}
+
+.wil>.db {
+  color: #beeb1e;
+}
+
+.psy>.db {
+  color: #8930e9;
+}

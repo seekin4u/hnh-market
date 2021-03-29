@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Haven &amp; Hearth — Not Found</title>
+    <link href="/portal/haven.css" title="Default style" type="text/css" rel="stylesheet" />
+    <link href="/portal/menu.css" title="Default style" type="text/css" rel="stylesheet" />
+    <link href="/haven-icon.png" rel="shortcut icon" type="image/png" />
+    <link href="/haven-icon.png" rel="icon" type="image/png" />
+  </head>
+  <body>
+    <div>
+      <div id="bannermenu">
+        <div id="menuleft">
+          <div class="menulist">
+            <span class="menuitem">
+              <a href="/portal/">Home</a>
+            </span><span class="menuitem">
+              <a href="/portal/about">About</a>
+            </span><span class="menuitem">
+              <a href="/portal/media">Media</a>
+            </span><span class="menuitem">
+              <a href="/portal/paq">Q&amp;A</a>
+            </span>
+          </div>
+        </div><div id="menucenter">
+          <a href="/portal/autohaven">
+            <img alt="Play now!" src="/img/menu/up" />
+          </a>
+        </div><div id="menuright">
+          <div class="menulist">
+            <span class="menuitem">
+              <a href="/forum">Forum</a>
+            </span><span class="menuitem">
+              <a href="/portal/store">Store</a>
+            </span><span class="menuitem">
+              <a href="/portal/login">Log in</a>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="pseudohr"></div>
+    </div><div class="vertdiv">
+      <h1>Not Found</h1>
+      <p>The requested resource was not found.</p>
+    </div><div class="shoplink" style="text-align: center;">
+      <a href="/portal/store">
+        <img title="The Hearth Shoppe" src="/img/store/shoplink" alt="Shoppe" />
+      </a>
+    </div>
+  </body>
+</html>
