@@ -7,6 +7,8 @@ body {
 
 .food-table {
   border-spacing: 0;
+  max-width:1500px;
+  width: 100%;
 }
 
 .food-table>tbody>tr {
@@ -14,16 +16,33 @@ body {
   margin: 0;
 }
 
+.food-table>thead>tr>th {
+  background-color: rgba(0, 0, 0, .3);
+}
+
+.food-table>thead>tr>th.sortable:hover {
+  background-color: rgba(0, 0, 0, .1);
+  cursor: pointer;
+}
+
 .food-table>tbody>tr>td {
   padding: 0;
   margin: 0;
-  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  border-bottom: 1px solid rgba(0, 0, 0, .3);
   text-align: center;
 }
 
-.food-table>tbody>tr>td.stat {
-  padding: 0 0.5em;
-  min-width: 2.2em;
+.food-table>tbody>tr>td.stat,
+.food-table>thead>tr>th.stat {
+  padding: 0 0.2em;
+  width: 4.2em;
+  font-weight: bold;
+}
+
+.food-table>tbody>tr>td.statw,
+.food-table>thead>tr>th.statw {
+  padding: 0 0.2em;
+  width: 5.2em;
   font-weight: bold;
 }
 
@@ -33,6 +52,7 @@ body {
 
 .food-table>tbody>tr>td.img {
   text-align: right;
+  width: 72px;
 }
 
 .str {

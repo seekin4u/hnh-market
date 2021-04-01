@@ -16,30 +16,40 @@
   <div id="app">
     <div>
       <label for="name">Name: </label>
-      <input type="text" id="name" name="name"/>
-      <button id="sort">sort</button>
-      <button id="sort2">sort</button>
+      <input type="text"
+             id="name"
+             name="name" />
     </div>
     <table class="food-table">
       <thead>
         <tr>
           <th></th>
-          <th style="min-width:200px">name</th>
-          <th style="min-width:192px">ingredients</th>
-          <th id="str">str</th>
-          <th id="agi">agi</th>
-          <th id="int">int</th>
-          <th id="con">con</th>
-          <th id="per">per</th>
-          <th id="cha">cha</th>
-          <th id="dex">dex</th>
-          <th id="wil">wil</th>
-          <th id="psy">psy</th>
-          <th>FEP/ Hunger</th>
-          <th>Total FEP</th>
-          <th>Hunger</th>
-          <th>Energy</th>
-          <th>Energy/ Hunger</th>
+          <th style="max-width:400px"
+              class="sortable">name</th>
+          <th style="width:192px">ingredients</th>
+          <th id="str"
+              class="sortable stat">str</th>
+          <th id="agi"
+              class="sortable stat">agi</th>
+          <th id="int"
+              class="sortable stat">int</th>
+          <th id="con"
+              class="sortable stat">con</th>
+          <th id="per"
+              class="sortable stat">per</th>
+          <th id="cha"
+              class="sortable stat">cha</th>
+          <th id="dex"
+              class="sortable stat">dex</th>
+          <th id="wil"
+              class="sortable stat">wil</th>
+          <th id="psy"
+              class="sortable stat">psy</th>
+          <th class="sortable statw" id="fepHunger">FEP/ Hunger</th>
+          <th class="sortable statw" id="fepSum">Total FEP</th>
+          <th class="sortable statw" id="hunger">Hunger</th>
+          <th class="sortable statw" id="energy">Energy</th>
+          <th class="sortable statw" id="energyHunger">Energy/ Hunger</th>
         </tr>
       </thead>
       <tbody id="foods"></tbody>
@@ -48,22 +58,22 @@
   <template id="food">
     <tr>
       <td class="img"></td>
+      <td style="font-weight: bold;"></td>
       <td></td>
-      <td></td>
-      <td class="stat str"></td>
-      <td class="stat agi"></td>
-      <td class="stat int"></td>
-      <td class="stat con"></td>
-      <td class="stat per"></td>
-      <td class="stat cha"></td>
-      <td class="stat dex"></td>
-      <td class="stat wil"></td>
-      <td class="stat psy"></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <td class="str stat stat"></td>
+      <td class="agi"></td>
+      <td class="int stat"></td>
+      <td class="con stat"></td>
+      <td class="per stat"></td>
+      <td class="cha stat"></td>
+      <td class="dex stat"></td>
+      <td class="wil stat"></td>
+      <td class="psy stat"></td>
+      <td class="statw"></td>
+      <td class="statw"></td>
+      <td class="statw"></td>
+      <td class="statw"></td>
+      <td class="statw"></td>
     </tr>
   </template>
 </body>

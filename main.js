@@ -673,6 +673,7 @@ fetch('https://hnhfood.vatsul.com/api/data/food-info2.json')
   .then(res => res.json())
   .then(data => {
     let recipes = data.filter(e => !(e.ingredients.filter(i => i.percentage !== 100 && i.percentage !== 200).length > 0));
+    recipes = recipes.filter(r => r.hunger >= 0);
     recipes.forEach(r => {
       let name = r.itemName;
       name = name === 'Magpie' ? 'Magpie (Pie)' : name;
@@ -715,11 +716,9 @@ app.use(express.static('pages'));
 app.use('/img/', express.static('img'));
 
 app.get('/api/food', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://139.177.178.41:5000');
   res.json({ data: allFood });
 });
 app.get('/api/resources', (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://139.177.178.41:5000');
   res.json({ data: resources });
 });
 
