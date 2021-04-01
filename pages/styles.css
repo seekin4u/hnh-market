@@ -1,5 +1,5 @@
 body {
-  background-color: #252031;
+  background-color: #36393f;
   color: #ddd;
   font-family: Verdana, sans-serif;
   font-size: 14px
@@ -30,6 +30,10 @@ body {
   margin: 0;
   border-bottom: 1px solid rgba(0, 0, 0, .3);
   text-align: center;
+}
+
+.food-table>tbody>tr:hover {
+  background-color: rgba(0, 0, 0, .1);
 }
 
 .food-table>tbody>tr>td.stat,
