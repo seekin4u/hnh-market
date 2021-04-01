@@ -70,7 +70,7 @@ const round = (num) => Math.round((num + Number.EPSILON) * 100) / 100;
 
 async function sendRequest(endpoint) {
   try {
-    const response = await fetch('http://localhost:5000/api/' + endpoint, {
+    const response = await fetch('http://139.177.178.41:5000/api/' + endpoint, {
       method: 'GET'
     });
     return await response.json();
