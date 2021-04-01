@@ -60,11 +60,11 @@ body {
 }
 
 .str {
-  color: #bd8682;
+  color: #dfa8a4;
 }
 
 .agi {
-  color: #857fb8;
+  color: #a69fe4;
 }
 
 .int {
@@ -96,11 +96,11 @@ body {
 }
 
 .str>.db {
-  color: #bb544c;
+  color: #ee8078;
 }
 
 .agi>.db {
-  color: #483cb8;
+  color: #808fff;
 }
 
 .int>.db {
@@ -108,7 +108,7 @@ body {
 }
 
 .con>.db {
-  color: #c73d97;
+  color: #f86cc7;
 }
 
 .per>.db {
@@ -128,5 +128,5 @@ body {
 }
 
 .psy>.db {
-  color: #8930e9;
+  color: #ce6eff;
 }
