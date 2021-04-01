@@ -70,7 +70,7 @@ const round = (num) => Math.round((num + Number.EPSILON) * 100) / 100;
 
 async function sendRequest(endpoint) {
   try {
-    const response = await fetch('http://localhost:5000/api/' + endpoint, {
+    const response = await fetch('http://139.177.178.41:5000/api/' + endpoint, {
       method: 'GET'
     });
     return await response.json();
@@ -201,10 +201,19 @@ function imgFromRes(name) {
   if (imgRes) {
     const img = document.createElement('img');
     img.setAttribute('src', '/img/' + (imgRes.mod ? imgRes.mod : imgRes.res) + '.png');
-    img.setAttribute('height', '32px');
-    img.setAttribute('title', name);
-    if (imgRes.mod) {
+    img.setAttribute('height', imgRes.resize ? '16px' : '32px');
+    if (!imgRes.resize) {
+      img.setAttribute('title', name);
+    }
+    if (imgRes.mod && !imgRes.resize) {
       img.setAttribute('style', 'background:url(/img/' + imgRes.res + '.png); background-size:32px');
+    }
+    if (imgRes.resize) {
+      const div = document.createElement('div');
+      div.setAttribute('title', name);
+      div.setAttribute('style', 'background:url(/img/' + imgRes.res + '.png); background-size:32px; height:32px; width:32px; display:inline-block; text-align:left; vertical-align:top');
+      div.append(img);
+      return div;
     }
     return img;
   }
