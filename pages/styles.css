@@ -5,6 +5,19 @@ body {
   font-size: 14px
 }
 
+.filter-table {
+  border-spacing: 0;
+}
+
+.filter-table>thead>tr,
+.filter-table>tbody>tr {
+  text-align:center;
+  height: 32px;
+}
+.filter-table>tbody>tr>td {
+  width: 32px;
+}
+
 .food-table {
   border-spacing: 0;
   max-width:1500px;

@@ -13,20 +13,40 @@ const nameBox = document.getElementById('name');
 
 nameBox.addEventListener('keyup', function () {
   clearTimeout(typingTimer);
-  typingTimer = setTimeout(doneTyping, doneTypingInterval);
+  typingTimer = setTimeout(updateFilter, doneTypingInterval);
 });
 
 nameBox.addEventListener('keydown', function () {
   clearTimeout(typingTimer);
 });
 
-function doneTyping() {
+function updateFilter() {
   let value = nameBox.value.toLowerCase();
-  updateState('food', state.foodAll.filter(f => f.name.toLowerCase().includes(value)));
+  let foodAll = state.foodAll;
+  let res = state.resources;
+  let filteredFood = foodAll.filter(f => f.name.toLowerCase().includes(value));
+  if (includes.length) {
+    filteredFood = filteredFood.filter(f => hasCommon((res[f.name] || {}).cat || [], includes));
+  }
+  console.log(includes);
+  updateState('food', filteredFood);
   updateTable();
 }
 
+function hasCommon(list1, list2) {
+  return list1.filter(a => list2.filter(b => a === b).length > 0).length > 0
+}
+
+//unknown ingredients
 let ingredients = [];
+let foods = [];
+
+const categories = [
+  'Sausage'
+]
+
+let includes = [];
+let excludes = [];
 
 const stats = [
   { code: 'str', name: 'Strength', sort: false },
@@ -41,11 +61,11 @@ const stats = [
 ];
 
 const extraColumns = [
-  { code:'fepHunger', sort: false },
-  { code:'fepSum', sort: false },
-  { code:'hunger', sort: false },
-  { code:'energy', sort: false },
-  { code:'energyHunger', sort: false }
+  { code: 'fepHunger', sort: false },
+  { code: 'fepSum', sort: false },
+  { code: 'hunger', sort: false },
+  { code: 'energy', sort: false },
+  { code: 'energyHunger', sort: false }
 ];
 
 stats.forEach(s => {
@@ -70,7 +90,7 @@ const round = (num) => Math.round((num + Number.EPSILON) * 100) / 100;
 
 async function sendRequest(endpoint) {
   try {
-    const response = await fetch('http://139.177.178.41:5000/api/' + endpoint, {
+    const response = await fetch('http://localhost:5000/api/' + endpoint, {
       method: 'GET'
     });
     return await response.json();
@@ -91,8 +111,9 @@ async function update() {
   const dataRes = await sendRequest('resources');
   let recipes = [];
   data.data.forEach(f => {
+    foods.push({ name: f.name, count: f.recipes.length });
     f.recipes.forEach(r => {
-      let fepSum = round(r.feps.map(fe => fe.value).reduce(sum,0));
+      let fepSum = round(r.feps.map(fe => fe.value).reduce(sum, 0));
       recipes.push({
         name: f.name,
         res: f.res,
@@ -115,11 +136,14 @@ async function update() {
     })
   });
   ingredients = ingredients.sort(sortBy('count', true));
+  foods = foods.sort(sortBy('count', true));
   console.log(ingredients.filter(e => !dataRes.data[e.name]));
+  console.log(foods.filter(e => !dataRes.data[e.name]));
   updateState('food', recipes);
   updateState('foodAll', recipes);
   updateState('resources', dataRes.data);
   updateTable();
+  updateFilterButtons();
 }
 
 function sortBy(field, asc) {
@@ -140,6 +164,49 @@ function sortByStat(stat, asc) {
   }
 }
 
+function updateFilterButtons() {
+  const groups = [];
+  for (const prop in state.resources) {
+    if (state.resources[prop].group) {
+      groups.push(prop)
+    }
+  }
+  const maxColumn = 4;
+  const filterRows = document.createDocumentFragment();
+  const allTr = document.createElement('tr');
+  const allTd = document.createElement('td');
+  allTd.setAttribute('colspan', maxColumn);
+  allTd.textContent = 'All';
+  allTd.addEventListener('click', function () {
+    includes.length = 0;
+    updateFilter();
+  });
+  allTr.append(allTd);
+  filterRows.append(allTr);
+  const template = document.getElementById('filterRow');
+  let column = 0;
+  let currentRow;
+  let tr;
+  groups.forEach(e => {
+    if (column === 0) {
+      currentRow = template.content.cloneNode(true);
+      tr = currentRow.querySelector('tr');
+      filterRows.append(currentRow);
+    }
+    tr.children[column].append(imgFromRes(e));
+    tr.children[column].addEventListener('click', function () {
+      let el = includes.filter(i => i === e)[0];
+      if (el) {
+        includes = includes.filter(i => i !== e);
+      } else {
+        includes.push(e);
+      }
+      updateFilter();
+    });
+    column = (column + 1) % maxColumn;
+  });
+  updateElement('filterIncludes', filterRows);
+}
 
 function updateTable() {
   const foodData = state.food;
@@ -241,10 +308,10 @@ function updateElement(id, data) {
 
 function fepListToObject(fepList) {
   let fepObj = {};
-  fepList.forEach(f=> {
+  fepList.forEach(f => {
     let name = f.name.split(' ')[0];
     let mult = f.name.split(' ')[1];
-    let stat = stats.filter(s=> s.name === name)[0];
+    let stat = stats.filter(s => s.name === name)[0];
     fepObj[stat.code + mult.replace('+', '')] = f.value;
   });
   return fepObj;

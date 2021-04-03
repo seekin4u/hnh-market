@@ -20,6 +20,15 @@
              id="name"
              name="name" />
     </div>
+    <table class="filter-table">
+      <thead>
+        <tr>
+          <th colspan="4">Includes</th>
+        </tr>
+      </thead>
+      <tbody id="filterIncludes">
+      </tbody>
+    </table>
     <table class="food-table">
       <thead>
         <tr>
@@ -55,6 +64,15 @@
       <tbody id="foods"></tbody>
     </table>
   </div>
+  
+  <template id="filterRow">
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </template>
   <template id="food">
     <tr>
       <td class="img"></td>

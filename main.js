@@ -21,6 +21,13 @@ const downloadFile = (async (url, path) => {
 const allFood = [];
 
 const resources = {
+
+  //categories
+  'Sausages': {res: 'paginae/craft/sausages', group:true},
+
+
+
+  //foods and materials
   'Wheat Flour': { res: 'gfx/invobjs/flour-wheatflour' },
   'Barley Flour': { res: 'gfx/invobjs/flour-barleyflour' },
   'Millet Flour': { res: 'gfx/invobjs/flour-milletflour' },
@@ -98,6 +105,64 @@ const resources = {
   'Fairy Mushroom': { res: 'gfx/invobjs/fairyshroom' },
   'Parasol Mushroom': { res: 'gfx/invobjs/herbs/parasolshroom' },
   'Troll Mushrooms': { res: 'gfx/invobjs/trollshrooms' },
+
+
+  'Badger Botillo': { res: 'gfx/invobjs/wurst-badgerbotillo', cat: ['Sausages'] },
+  'Bear Salami': { res: 'gfx/invobjs/wurst-bearsalami', cat: ['Sausages'] },
+  'Beaver Dog': { res: 'gfx/invobjs/wurst-beaverdog', cat: ['Sausages'] },
+  'Big Bear Banger': { res: 'gfx/invobjs/wurst-bigbearbanger', cat: ['Sausages'] },
+  'Boar Baloney': { res: 'gfx/invobjs/wurst-boarbaloney', cat: ['Sausages'] },
+  'Boar Boudin': { res: 'gfx/invobjs/wurst-boarboudin', cat: ['Sausages'] },
+  "Butcher's Surprise": { res: 'gfx/invobjs/wurst-butcherssurprise', cat: ['Sausages'] },
+  'Cave Dog': { res: 'gfx/invobjs/wurst-cavedog', cat: ['Sausages'] },
+  'Chicken Chorizo': { res: 'gfx/invobjs/wurst-chickenchorizo', cat: ['Sausages'] },
+  'Cow Chorizo': { res: 'gfx/invobjs/wurst-cowchorizo', cat: ['Sausages'] },
+  'Delicious Deer Dog': { res: 'gfx/invobjs/wurst-deliciousdeer', cat: ['Sausages'] },
+  'Elk Dog': { res: 'gfx/invobjs/wurst-elkdog', cat: ['Sausages'] },
+  'Fox Fuet': { res: 'gfx/invobjs/wurst-foxfuet', cat: ['Sausages'] },
+  'Fox Wurst': { res: 'gfx/invobjs/wurst-foxwurst', cat: ['Sausages'] },
+  'Glazed Grazer Dog': { res: 'gfx/invobjs/wurst-glazedgrazer', cat: ['Sausages'] },
+  'Hedgedog': { res: 'gfx/invobjs/wurst-hedgedog', cat: ['Sausages'] },
+  'King of the Woods': { res: 'gfx/invobjs/wurst-woodking', cat: ['Sausages'] },
+  'Lamb & Lynx': { res: 'gfx/invobjs/wurst-lamblynx', cat: ['Sausages'] },
+  'Lamb Sausages': { res: 'gfx/invobjs/wurst-lambsausages', cat: ['Sausages'] },
+  'Lynxalami': { res: 'gfx/invobjs/wurst-lynxalami', cat: ['Sausages'] },
+  'Moodog': { res: 'gfx/invobjs/wurst-moodog', cat: ['Sausages'] },
+  'Piglet Wursts': { res: 'gfx/invobjs/wurst-piglet', cat: ['Sausages'] },
+  'Running Rabbit Sausage': { res: 'gfx/invobjs/wurst-runningrabbit', cat: ['Sausages'] },
+  'Swan Neck': { res: 'gfx/invobjs/wurst-swanneck', cat: ['Sausages'] },
+  'Tame Game Liverwurst': { res: 'gfx/invobjs/wurst-tamegame', cat: ['Sausages'] },
+  'Walrus & Carpenter': { res: 'gfx/invobjs/wurst-carpwal', cat: ['Sausages'] },
+  'Wonderful Wilderness Wurst': { res: 'gfx/invobjs/wurst-www', cat: ['Sausages'] },
+
+  'Smoked Badger Botillo': { res: 'gfx/invobjs/wurst-s-badgerbotillo', cat: ['Sausages'] },
+  'Smoked Bear Salami': { res: 'gfx/invobjs/wurst-s-bearsalami', cat: ['Sausages'] },
+  'Smoked Beaver Dog': { res: 'gfx/invobjs/wurst-s-beaverdog', cat: ['Sausages'] },
+  'Smoked Big Bear Banger': { res: 'gfx/invobjs/wurst-s-bigbearbanger', cat: ['Sausages'] },
+  'Smoked Boar Baloney': { res: 'gfx/invobjs/wurst-s-boarbaloney', cat: ['Sausages'] },
+  'Smoked Boar Boudin': { res: 'gfx/invobjs/wurst-s-boarboudin', cat: ['Sausages'] },
+  "Smoked Butcher's Surprise": { res: 'gfx/invobjs/wurst-s-butcherssurprise', cat: ['Sausages'] },
+  'Smoked Cave Dog': { res: 'gfx/invobjs/wurst-s-cavedog', cat: ['Sausages'] },
+  'Smoked Chicken Chorizo': { res: 'gfx/invobjs/wurst-s-chickenchorizo', cat: ['Sausages'] },
+  'Smoked Cow Chorizo': { res: 'gfx/invobjs/wurst-s-cowchorizo', cat: ['Sausages'] },
+  'Smoked Delicious Deer Dog': { res: 'gfx/invobjs/wurst-s-deliciousdeer', cat: ['Sausages'] },
+  'Smoked Elk Dog': { res: 'gfx/invobjs/wurst-s-elkdog', cat: ['Sausages'] },
+  'Smoked Fox Fuet': { res: 'gfx/invobjs/wurst-s-foxfuet', cat: ['Sausages'] },
+  'Smoked Fox Wurst': { res: 'gfx/invobjs/wurst-s-foxwurst', cat: ['Sausages'] },
+  'Smoked Glazed Grazer Dog': { res: 'gfx/invobjs/wurst-s-glazedgrazer', cat: ['Sausages'] },
+  'Smoked Hedgedog': { res: 'gfx/invobjs/wurst-s-hedgedog', cat: ['Sausages'] },
+  'Smoked King of the Woods': { res: 'gfx/invobjs/wurst-s-woodking', cat: ['Sausages'] },
+  'Smoked Lamb & Lynx': { res: 'gfx/invobjs/wurst-s-lamblynx', cat: ['Sausages'] },
+  'Smoked Lamb Sausages': { res: 'gfx/invobjs/wurst-s-lambsausages', cat: ['Sausages'] },
+  'Smoked Lynxalami': { res: 'gfx/invobjs/wurst-s-lynxalami', cat: ['Sausages'] },
+  'Smoked Moodog': { res: 'gfx/invobjs/wurst-s-moodog', cat: ['Sausages'] },
+  'Smoked Piglet Wursts': { res: 'gfx/invobjs/wurst-s-piglet', cat: ['Sausages'] },
+  'Smoked Running Rabbit Sausage': { res: 'gfx/invobjs/wurst-s-runningrabbit', cat: ['Sausages'] },
+  'Smoked Swan Neck': { res: 'gfx/invobjs/wurst-s-swanneck', cat: ['Sausages'] },
+  'Smoked Tame Game Liverwurst': { res: 'gfx/invobjs/wurst-s-tamegame', cat: ['Sausages'] },
+  'Smoked Walrus & Carpenter': { res: 'gfx/invobjs/wurst-s-carpwal', cat: ['Sausages'] },
+  'Smoked Wonderful Wilderness Wurst': { res: 'gfx/invobjs/wurst-s-www', cat: ['Sausages'] },
+
 
   'Alder': { res: 'gfx/invobjs/wblock-alder' },
   'Almond tree': { res: 'gfx/invobjs/wblock-almondtree' },
