@@ -109,6 +109,7 @@ function updateState(property, newData) {
 async function update() {
   const data = await sendRequest('food');
   const dataRes = await sendRequest('resources');
+  const stallData = await sendRequest('stalls');
   let recipes = [];
   data.data.forEach(f => {
     foods.push({ name: f.name, count: f.recipes.length });
@@ -142,8 +143,10 @@ async function update() {
   updateState('food', recipes);
   updateState('foodAll', recipes);
   updateState('resources', dataRes.data);
+  updateState('stalls', stallData);
   updateTable();
   updateFilterButtons();
+  updateStall();
 }
 
 function sortBy(field, asc) {
@@ -207,6 +210,58 @@ function updateFilterButtons() {
   });
   updateElement('filterIncludes', filterRows);
 }
+
+
+
+
+
+function updateStall() {
+  const stallData = state.stalls;
+  const itemRows = document.createDocumentFragment();
+  let rows = 0;
+  for (const stall of stallData) {
+    for (const item of stall) {
+      if (item.item) {
+        const itemRow = createItemRow(item);
+        itemRows.appendChild(itemRow);
+      }
+    }
+  }
+  updateElement('items', itemRows);
+}
+
+function createItemRow(item) {
+  const template = document.getElementById('item');
+  const itemRow = template.content.cloneNode(true);
+  const tr = itemRow.querySelector('tr');
+  console.log(item);
+  let img = imgFromRes(item.item.name);
+  if (!img) {
+    img = document.createElement('img');
+    img.setAttribute('src', '/img/' + item.item.gfx + '.png');
+    img.setAttribute('height', '32px');
+  }
+  let pimg = imgFromRes(item.price.name);
+  if (!pimg) {
+    pimg = document.createElement('img');
+    pimg.setAttribute('src', '/img/' + item.price.gfx + '.png');
+    pimg.setAttribute('height', '32px');
+  }
+  tr.children[0].append(img);
+  tr.children[1].textContent = item.item.name;
+  tr.children[2].textContent = item.item.quality;
+  tr.children[3].append(pimg);
+  tr.children[4].textContent = item.price.name;
+  tr.children[5].textContent = item.price.amount;
+  tr.children[6].textContent = item.price.quality;
+  return itemRow;
+}
+
+
+
+
+
+
 
 function updateTable() {
   const foodData = state.food;

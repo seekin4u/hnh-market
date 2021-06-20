@@ -14,6 +14,28 @@
 
 <body>
   <div id="app">
+    <table class="food-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th style="max-width:400px"
+              class="sortable">name</th>
+          <th id="quality"
+              class="sortable stat">quality</th>
+          <th id="priceGfx"
+              class="sortable stat"></th>
+          <th id="price"
+              class="sortable stat">price</th>
+          <th id="pAmount"
+              class="sortable stat">amount</th>
+          <th id="pQuality"
+              class="sortable stat">quality</th>
+        </tr>
+      </thead>
+      <tbody id="items"></tbody>
+    </table>
+
+    <hr />
     <div>
       <label for="name">Name: </label>
       <input type="text"
@@ -54,23 +76,39 @@
               class="sortable stat">wil</th>
           <th id="psy"
               class="sortable stat">psy</th>
-          <th class="sortable statw" id="fepHunger">FEP/ Hunger</th>
-          <th class="sortable statw" id="fepSum">Total FEP</th>
-          <th class="sortable statw" id="hunger">Hunger</th>
-          <th class="sortable statw" id="energy">Energy</th>
-          <th class="sortable statw" id="energyHunger">Energy/ Hunger</th>
+          <th class="sortable statw"
+              id="fepHunger">FEP/ Hunger</th>
+          <th class="sortable statw"
+              id="fepSum">Total FEP</th>
+          <th class="sortable statw"
+              id="hunger">Hunger</th>
+          <th class="sortable statw"
+              id="energy">Energy</th>
+          <th class="sortable statw"
+              id="energyHunger">Energy/ Hunger</th>
         </tr>
       </thead>
       <tbody id="foods"></tbody>
     </table>
   </div>
-  
+
   <template id="filterRow">
     <tr>
       <td></td>
       <td></td>
       <td></td>
       <td></td>
+    </tr>
+  </template>
+  <template id="item">
+    <tr>
+      <td class="img"></td>
+      <td style="font-weight: bold;"></td>
+      <td class="stat"></td>
+      <td class="img"></td>
+      <td style="font-weight: bold;"></td>
+      <td class="stat"></td>
+      <td class="stat"></td>
     </tr>
   </template>
   <template id="food">

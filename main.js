@@ -1,5 +1,6 @@
 const fetch = require('node-fetch');
-const express = require('express');
+const express = require('express')
+  , bodyParser = require('body-parser');
 const fs = require('fs');
 
 const app = express();
@@ -19,11 +20,12 @@ const downloadFile = (async (url, path) => {
 });
 
 const allFood = [];
+let stalls = [];
 
 const resources = {
 
   //categories
-  'Sausages': {res: 'paginae/craft/sausages', group:true},
+  'Sausages': { res: 'paginae/craft/sausages', group: true },
 
 
 
@@ -887,7 +889,12 @@ function listContains(list, el) {
   return list.filter(e => e === el).length > 0;
 }
 
+function updateGfx(name) {
+  downloadFile('http://www.havenandhearth.com/mt/r/' + name, './img/' + name + '.png');
+}
+
 app.use(express.static('pages'));
+app.use(bodyParser.json());
 app.use('/img/', express.static('img'));
 
 app.get('/api/food', (req, res) => {
@@ -895,6 +902,28 @@ app.get('/api/food', (req, res) => {
 });
 app.get('/api/resources', (req, res) => {
   res.json({ data: resources });
+});
+app.get('/api/stalls', (req, res) => {
+  res.json(stalls);
+});
+app.get('/api/stalls/clear', (req, res) => {
+  stalls = [];
+  res.json({ data: 'ok' });
+});
+app.post('/api/stalls/add', (req, res) => {
+  stalls.push(req.body);
+  const resources = [];
+  req.body.forEach(s => {
+    if (s) {
+      if (s.item)
+      resources.push(s.item.gfx);
+      if (s.price)
+      resources.push(s.price.gfx);
+    }
+  });
+  resources.forEach(updateGfx);
+  console.log('got');
+  res.json({ data: 'ok' });
 });
 
 const server = app.listen(port);
