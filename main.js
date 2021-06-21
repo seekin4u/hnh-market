@@ -911,7 +911,7 @@ app.get('/api/stalls/clear', (req, res) => {
   res.json({ data: 'ok' });
 });
 app.post('/api/stalls/add', (req, res) => {
-  let stall = stalls.filter(e => req.body.id === stall.id)[0];
+  let stall = stalls.filter(e => req.body.id === e.id)[0];
   if (stall) {
     stall.rows = req.body.rows;
   } {
