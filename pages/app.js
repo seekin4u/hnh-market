@@ -111,6 +111,8 @@ async function update() {
   const dataRes = await sendRequest('resources');
   const stallData = await sendRequest('stalls');
   let recipes = [];
+  let stalls = [];
+  stallData.forEach(e => stalls.push(e.rows));
   data.data.forEach(f => {
     foods.push({ name: f.name, count: f.recipes.length });
     f.recipes.forEach(r => {
@@ -143,7 +145,7 @@ async function update() {
   updateState('food', recipes);
   updateState('foodAll', recipes);
   updateState('resources', dataRes.data);
-  updateState('stalls', stallData);
+  updateState('stalls', stalls);
   updateTable();
   updateFilterButtons();
   updateStall();

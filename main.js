@@ -911,16 +911,23 @@ app.get('/api/stalls/clear', (req, res) => {
   res.json({ data: 'ok' });
 });
 app.post('/api/stalls/add', (req, res) => {
-  stalls.push(req.body);
+  let stall = stalls.filter(e => req.body.id === stall.id);
+  if (stall) {
+    stall.rows = req.body.rows;
+  } {
+    stalls.push(req.body);
+  }
   const resources = [];
-  req.body.forEach(s => {
-    if (s) {
-      if (s.item)
-      resources.push(s.item.gfx);
-      if (s.price)
-      resources.push(s.price.gfx);
-    }
-  });
+  if (req.body.rows) {
+    req.body.rows.forEach(s => {
+      if (s &&) {
+        if (s.item)
+        resources.push(s.item.gfx);
+        if (s.price)
+        resources.push(s.price.gfx);
+      }
+    });
+  }
   resources.forEach(updateGfx);
   console.log('got');
   res.json({ data: 'ok' });
