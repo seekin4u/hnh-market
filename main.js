@@ -920,7 +920,7 @@ app.post('/api/stalls/add', (req, res) => {
   const resources = [];
   if (req.body.rows) {
     req.body.rows.forEach(s => {
-      if (s &&) {
+      if (s) {
         if (s.item)
         resources.push(s.item.gfx);
         if (s.price)
