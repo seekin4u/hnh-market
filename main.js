@@ -914,7 +914,7 @@ app.post('/api/stalls/add', (req, res) => {
   let stall = stalls.filter(e => req.body.id === e.id)[0];
   if (stall) {
     stall.rows = req.body.rows;
-  } {
+  } else {
     stalls.push(req.body);
   }
   const resources = [];
