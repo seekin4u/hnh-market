@@ -150,3 +150,8 @@ body {
   stroke-width: 3;
   opacity: 1;
 }
+#map {
+  right: 0;
+  top: 0;
+  position: fixed;
+}
