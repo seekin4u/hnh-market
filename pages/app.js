@@ -97,7 +97,7 @@ const round = (num) => Math.round((num + Number.EPSILON) * 100) / 100;
 
 async function sendRequest(endpoint) {
   try {
-    const response = await fetch('https://hnh-food.junespark.net/api/' + endpoint, {
+    const response = await fetch('https://hnh-market.junespark.net/api/' + endpoint, {
       method: 'GET'
     });
     return await response.json();
