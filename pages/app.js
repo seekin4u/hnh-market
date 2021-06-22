@@ -123,7 +123,7 @@ async function update() {
   for(let i = 0; i < stallData.length; i++) {
     let s = stallData[i];
     stalls.push({coord: s.coord, market: s.market, id: i});
-    s.rows.forEach(i => items.push({...s.rows, stallId: i}));
+    s.rows.forEach(e => items.push({...e, stallId: i}));
   }
   stallData.forEach(s => {
   });
