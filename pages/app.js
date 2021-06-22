@@ -1,5 +1,3 @@
-const e = require("express");
-
 const limit = 100;
 
 let state = Object.freeze({
