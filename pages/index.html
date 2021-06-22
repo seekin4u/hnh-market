@@ -14,95 +14,94 @@
 
 <body>
   <div id="app">
-    <table class="food-table"
-           style="max-width:1200px;float:left">
-      <thead>
-        <tr>
-          <th></th>
-          <th style="max-width:400px"
-              class="sortable">name</th>
-          <th id="quality"
-              class="sortable stat">quality</th>
-          <th></th>
-          <th id="price"
-              class="sortable">price</th>
-          <th id="pAmount"
-              class="sortable stat">amount</th>
-          <th id="pQuality"
-              class="sortable stat">quality</th>
-          <th id="left"
-              class="sortable stat">left</th>
-        </tr>
-      </thead>
-      <tbody id="items"></tbody>
-    </table>
-    <div id="map"
-         style="background: url('/img/linchik.png') no-repeat; width:300px; height:300px; opacity: 0.5; float:right">
-      <svg xmlns="http://www.w3.org/2000/svg"
-           xmlns:xlink="http://www.w3.org/1999/xlink"
-           style="height:100%; width:100%;">
-        <circle id="marker"
-                stroke-opacity="1"
-                class="marker"></circle>
-      </svg>
-    </div>
-    <hr />
     <div hidden="true">
-      <div>
-        <label for="name">Name: </label>
-        <input type="text"
-               id="name"
-               name="name" />
-      </div>
-      <table class="filter-table">
-        <thead>
-          <tr>
-            <th colspan="4">Includes</th>
-          </tr>
-        </thead>
-        <tbody id="filterIncludes">
-        </tbody>
-      </table>
-      <table class="food-table">
+      <table class="food-table"
+             style="max-width:1200px;float:left">
         <thead>
           <tr>
             <th></th>
             <th style="max-width:400px"
                 class="sortable">name</th>
-            <th style="width:192px">ingredients</th>
-            <th id="str"
-                class="sortable stat">str</th>
-            <th id="agi"
-                class="sortable stat">agi</th>
-            <th id="int"
-                class="sortable stat">int</th>
-            <th id="con"
-                class="sortable stat">con</th>
-            <th id="per"
-                class="sortable stat">per</th>
-            <th id="cha"
-                class="sortable stat">cha</th>
-            <th id="dex"
-                class="sortable stat">dex</th>
-            <th id="wil"
-                class="sortable stat">wil</th>
-            <th id="psy"
-                class="sortable stat">psy</th>
-            <th class="sortable statw"
-                id="fepHunger">FEP/ Hunger</th>
-            <th class="sortable statw"
-                id="fepSum">Total FEP</th>
-            <th class="sortable statw"
-                id="hunger">Hunger</th>
-            <th class="sortable statw"
-                id="energy">Energy</th>
-            <th class="sortable statw"
-                id="energyHunger">Energy/ Hunger</th>
+            <th id="quality"
+                class="sortable stat">quality</th>
+            <th></th>
+            <th id="price"
+                class="sortable">price</th>
+            <th id="pAmount"
+                class="sortable stat">amount</th>
+            <th id="pQuality"
+                class="sortable stat">quality</th>
+            <th id="left"
+                class="sortable stat">left</th>
           </tr>
         </thead>
-        <tbody id="foods"></tbody>
+        <tbody id="items"></tbody>
       </table>
+      <div id="map"
+           style="background: url('/img/linchik.png') no-repeat; width:300px; height:300px; opacity: 0.5; float:right">
+        <svg xmlns="http://www.w3.org/2000/svg"
+             xmlns:xlink="http://www.w3.org/1999/xlink"
+             style="height:100%; width:100%;">
+          <circle id="marker"
+                  stroke-opacity="1"
+                  class="marker"></circle>
+        </svg>
+      </div>
     </div>
+    <div>
+      <label for="name">Name: </label>
+      <input type="text"
+             id="name"
+             name="name" />
+    </div>
+    <table class="filter-table">
+      <thead>
+        <tr>
+          <th colspan="4">Includes</th>
+        </tr>
+      </thead>
+      <tbody id="filterIncludes">
+      </tbody>
+    </table>
+    <table class="food-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th style="max-width:400px"
+              class="sortable">name</th>
+          <th style="width:192px">ingredients</th>
+          <th id="str"
+              class="sortable stat">str</th>
+          <th id="agi"
+              class="sortable stat">agi</th>
+          <th id="int"
+              class="sortable stat">int</th>
+          <th id="con"
+              class="sortable stat">con</th>
+          <th id="per"
+              class="sortable stat">per</th>
+          <th id="cha"
+              class="sortable stat">cha</th>
+          <th id="dex"
+              class="sortable stat">dex</th>
+          <th id="wil"
+              class="sortable stat">wil</th>
+          <th id="psy"
+              class="sortable stat">psy</th>
+          <th class="sortable statw"
+              id="fepHunger">FEP/ Hunger</th>
+          <th class="sortable statw"
+              id="fepSum">Total FEP</th>
+          <th class="sortable statw"
+              id="hunger">Hunger</th>
+          <th class="sortable statw"
+              id="energy">Energy</th>
+          <th class="sortable statw"
+              id="energyHunger">Energy/ Hunger</th>
+        </tr>
+      </thead>
+      <tbody id="foods"></tbody>
+    </table>
   </div>
 
   <template id="filterRow">
