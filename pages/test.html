@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+  <title>HnH - food</title>
+  <link rel="stylesheet"
+        href="styles.css">
+</head>
+
+<body>
+  <table class="food-table" style="max-width:1200px; min-height:500px; float:left">
+    <thead>
+      <tr>
+        <th></th>
+        <th style="max-width:400px"
+            class="sortable">name</th>
+        <th id="quality"
+            class="sortable stat">quality</th>
+        <th></th>
+        <th id="price"
+            class="sortable">price</th>
+        <th id="pAmount"
+            class="sortable stat">amount</th>
+        <th id="pQuality"
+            class="sortable stat">quality</th>
+      </tr>
+    </thead>
+    <tbody id="items"></tbody>
+  </table>
+  <div id="mapContainer" style="background: url('./../img/linchik.png') no-repeat; width:300px; height:300px; opacity: 0.5; float:right">
+    <svg id="mapSVG" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="height:100%; width:100%;">
+    <circle id="marker" stroke-opacity="1" class="marker"></circle></svg>
+  </div>
+  <table class="food-table" style="min-height:500px;">
+    <thead>
+      <tr>
+        <th></th>
+        <th style="max-width:400px"
+            class="sortable">name</th>
+        <th id="quality"
+            class="sortable stat">quality</th>
+        <th id="priceGfx"
+            class="sortable stat"></th>
+        <th id="price"
+            class="sortable stat">price</th>
+        <th id="pAmount"
+            class="sortable stat">amount</th>
+        <th id="pQuality"
+            class="sortable stat">quality</th>
+      </tr>
+    </thead>
+    <tbody id="items"></tbody>
+  </table>
+  <script src="test.js"
+          defer></script>
+</body>
+
+</html>

@@ -143,3 +143,10 @@ body {
 .psy>.db {
   color: #ce6eff;
 }
+
+.marker {
+  fill: #52e1e9;
+  stroke: #000;
+  stroke-width: 3;
+  opacity: 1;
+}

@@ -1,3 +1,5 @@
+const e = require("express");
+
 const limit = 100;
 
 let state = Object.freeze({
@@ -10,6 +12,13 @@ update();
 let typingTimer;
 let doneTypingInterval = 100;
 const nameBox = document.getElementById('name');
+let marketData = [
+  {
+    name: 'Linch Market',
+    vcCoords: {x: 148, y: 150},
+    scale: 0.27
+  }
+];
 
 nameBox.addEventListener('keyup', function () {
   clearTimeout(typingTimer);
@@ -112,7 +121,14 @@ async function update() {
   const stallData = await sendRequest('stalls');
   let recipes = [];
   let stalls = [];
-  stallData.forEach(e => stalls.push(e.rows));
+  let items = [];
+  for(let i = 0; i < stallData.length; i++) {
+    let s = stallData[i];
+    stalls.push({coord: s.coord, market: s.market, id: i});
+    s.rows.forEach(i => items.push({...i.rows, stallId: i}));
+  }
+  stallData.forEach(s => {
+  });
   data.data.forEach(f => {
     foods.push({ name: f.name, count: f.recipes.length });
     f.recipes.forEach(r => {
@@ -146,6 +162,7 @@ async function update() {
   updateState('foodAll', recipes);
   updateState('resources', dataRes.data);
   updateState('stalls', stalls);
+  updateState('items', items);
   updateTable();
   updateFilterButtons();
   updateStall();
@@ -218,15 +235,12 @@ function updateFilterButtons() {
 
 
 function updateStall() {
-  const stallData = state.stalls;
+  const itemData = state.items;
   const itemRows = document.createDocumentFragment();
-  let rows = 0;
-  for (const stall of stallData) {
-    for (const item of stall) {
-      if (item.item) {
-        const itemRow = createItemRow(item);
-        itemRows.appendChild(itemRow);
-      }
+  for (const item of itemData) {
+    if (item.item) {
+      const itemRow = createItemRow(item);
+      itemRows.appendChild(itemRow);
     }
   }
   updateElement('items', itemRows);
@@ -256,6 +270,18 @@ function createItemRow(item) {
   tr.children[4].textContent = item.price.name;
   tr.children[5].textContent = item.price.amount;
   tr.children[6].textContent = item.price.quality;
+  tr.children[7].textContent = item.left;
+  tr.setAttribute('id', item.stallId);
+  tr.addEventListener('mouseenter', function (e) {
+    let stall = state.stalls.filter(e=> e.id === item.stallId)[0];
+    let marker = document.getElementById('marker');
+    if (stall && marker) {
+      let coords = interpolateCoords(stall.coord, stall.market);
+      marker.setAttribute('cx', coords.x);
+      marker.setAttribute('cy', coords.y);
+      marker.setAttribute('r', 5);
+    }
+  });
   return itemRow;
 }
 
@@ -372,4 +398,13 @@ function fepListToObject(fepList) {
     fepObj[stat.code + mult.replace('+', '')] = f.value;
   });
   return fepObj;
+}
+
+function interpolateCoords(coords, marketName) {
+  let market = marketData.filter(e => e.name === marketName)[0];
+  if (!market) return {x:0, y:0};
+  return {
+    x: market.vcCoords.x - coords.x * market.scale,
+    y: market.vcCoords.y - coords.y * market.scale
+  }
 }

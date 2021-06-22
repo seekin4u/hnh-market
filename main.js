@@ -911,7 +911,7 @@ app.get('/api/stalls/clear', (req, res) => {
   res.json({ data: 'ok' });
 });
 app.post('/api/stalls/add', (req, res) => {
-  let stall = stalls.filter(e => req.body.id === e.id)[0];
+  let stall = stalls.filter(e => compareCoords(req.body.coord, e.coord))[0];
   if (stall) {
     stall.rows = req.body.rows;
   } else {
@@ -929,8 +929,11 @@ app.post('/api/stalls/add', (req, res) => {
     });
   }
   resources.forEach(updateGfx);
-  console.log('got');
   res.json({ data: 'ok' });
 });
+
+function compareCoords(coord1, coord2) {
+  return coord1.x === coord2.x && coord1.y === coord2.y;
+}
 
 const server = app.listen(port);
