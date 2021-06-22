@@ -161,6 +161,8 @@ async function update() {
   updateState('resources', dataRes.data);
   updateState('stalls', stalls);
   updateState('items', items);
+  console.log(stalls);
+  console.log(items);
   updateTable();
   updateFilterButtons();
   updateStall();
