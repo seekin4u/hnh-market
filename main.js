@@ -34,6 +34,8 @@ const downloadFile = (async (url, path) => {
               .toBuffer()
               .then(x => fs.writeFileSync(path, x));
           })
+      } else {
+        fs.writeFileSync(path, Buffer.from(x));
       }
     });
 });
