@@ -179,8 +179,10 @@ img.img-left {
   box-sizing: border-box;
 }
 #item-filter > .checkbox {
+  float: left;
   text-align: left;
   padding: 2px 6px;
+  width:40%;
 }
 #item-filter > input[type="text"] {
   border: none;

@@ -3,7 +3,7 @@ const local = true;
 const url = local ? 'http://localhost:5000' : 'https://hnh-market.junespark.net';
 
 let state = Object.freeze({
-  food: null
+  items: null
 });
 
 update();
@@ -19,32 +19,6 @@ let marketData = [
 
 let typingTimer;
 let doneTypingInterval = 100;
-const nameBox = document.getElementById('name');
-
-nameBox.addEventListener('keyup', function () {
-  clearTimeout(typingTimer);
-  typingTimer = setTimeout(updateFilter, doneTypingInterval);
-});
-
-nameBox.addEventListener('keydown', function () {
-  clearTimeout(typingTimer);
-});
-
-function updateFilter() {
-  let value = nameBox.value.toLowerCase();
-  let foodAll = state.foodAll;
-  let res = state.resources;
-  let filteredFood = foodAll.filter(f => f.name.toLowerCase().includes(value));
-  if (includes.length) {
-    filteredFood = filteredFood.filter(f => hasCommon((res[f.name] || {}).cat || [], includes));
-  }
-  updateState('food', filteredFood);
-  updateTable();
-}
-
-function hasCommon(list1, list2) {
-  return list1.filter(a => list2.filter(b => a === b).length > 0).length > 0
-}
 
 const textFilters = document.getElementsByClassName('text-filter');
 for (let tf of textFilters) {
@@ -112,39 +86,6 @@ function updateItemFilter() {
   updateState('items', filteredItems);
   updateStall();
 }
-
-
-//unknown ingredients
-let ingredients = [];
-let foods = [];
-
-const categories = [
-  'Sausage'
-]
-
-let includes = [];
-let excludes = [];
-
-const stats = [
-  { code: 'str', name: 'Strength', sort: false },
-  { code: 'agi', name: 'Agility', sort: false },
-  { code: 'int', name: 'Intelligence', sort: false },
-  { code: 'con', name: 'Constitution', sort: false },
-  { code: 'per', name: 'Perception', sort: false },
-  { code: 'cha', name: 'Charisma', sort: false },
-  { code: 'dex', name: 'Dexterity', sort: false },
-  { code: 'wil', name: 'Will', sort: false },
-  { code: 'psy', name: 'Psyche', sort: false }
-];
-
-const extraColumns = [
-  { code: 'fepHunger', sort: false },
-  { code: 'fepSum', sort: false },
-  { code: 'hunger', sort: false },
-  { code: 'energy', sort: false },
-  { code: 'energyHunger', sort: false }
-];
-
 const itemColumns = [
   { code: 'item.name', id: 'iName', sort: false },
   { code: 'item.quality', id: 'iQuality', sort: false },
@@ -154,22 +95,6 @@ const itemColumns = [
   { code: 'leftNum', id: 'iLeft', sort: false }
 ];
 
-stats.forEach(s => {
-  document.getElementById(s.code).addEventListener('click', function (e) {
-    state.food = state.food.sort(sortByStat(s.code, s.sort));
-    s.sort = !s.sort;
-    updateTable();
-  });
-});
-
-extraColumns.forEach(c => {
-  document.getElementById(c.code).addEventListener('click', function (e) {
-    state.food = state.food.sort(sortBy(c.code, c.sort));
-    c.sort = !c.sort;
-    updateTable();
-  });
-});
-
 itemColumns.forEach(c => {
   document.getElementById(c.id).addEventListener('click', function (e) {
     state.items = state.items.sort(sortBy(c.code, c.sort));
@@ -177,9 +102,6 @@ itemColumns.forEach(c => {
     updateStall();
   });
 });
-
-const sum = (accumulator, currentValue) => accumulator + currentValue;
-const round = (num) => Math.round((num + Number.EPSILON) * 100) / 100;
 
 
 async function sendRequest(endpoint) {
@@ -201,10 +123,8 @@ function updateState(property, newData) {
 }
 
 async function update() {
-  const data = await sendRequest('food');
   const dataRes = await sendRequest('resources');
   const stallData = await sendRequest('stalls');
-  let recipes = [];
   let stalls = [];
   let items = [];
   for (let i = 0; i < stallData.length; i++) {
@@ -213,43 +133,10 @@ async function update() {
     s.rows.forEach(e => items.push({ ...e, stallId: i }));
     items.forEach(e => e.leftNum = parseInt(e.left));
   }
-  stallData.forEach(s => {
-  });
-  data.data.forEach(f => {
-    foods.push({ name: f.name, count: f.recipes.length });
-    f.recipes.forEach(r => {
-      let fepSum = round(r.feps.map(fe => fe.value).reduce(sum, 0));
-      recipes.push({
-        name: f.name,
-        res: f.res,
-        ingredients: r.ingredients,
-        feps: fepListToObject(r.feps),
-        fepHunger: round(fepSum / r.hunger),
-        fepSum: fepSum,
-        hunger: r.hunger,
-        energy: r.energy,
-        energyHunger: round(r.energy / r.hunger)
-      });
-      r.ingredients.forEach(i => {
-        let ingredient = ingredients.filter(e => e.name === i)[0];
-        if (!ingredient) {
-          ingredients.push({ name: i, count: 1 });
-        } else {
-          ingredient.count += 1;
-        }
-      });
-    })
-  });
-  ingredients = ingredients.sort(sortBy('count', true));
-  foods = foods.sort(sortBy('count', true));
-  updateState('food', recipes);
-  updateState('foodAll', recipes);
   updateState('resources', dataRes.data);
   updateState('stalls', stalls);
   updateState('itemsAll', items);
   updateState('items', items.filter(e => e.item));
-  updateTable();
-  updateFilterButtons();
   updateStall();
 }
 
@@ -274,52 +161,6 @@ function sortByStat(stat, asc) {
     return fepA > fepB ? -1 : 1;
   }
 }
-
-function updateFilterButtons() {
-  const groups = [];
-  for (const prop in state.resources) {
-    if (state.resources[prop].group) {
-      groups.push(prop)
-    }
-  }
-  const maxColumn = 4;
-  const filterRows = document.createDocumentFragment();
-  const allTr = document.createElement('tr');
-  const allTd = document.createElement('td');
-  allTd.setAttribute('colspan', maxColumn);
-  allTd.textContent = 'All';
-  allTd.addEventListener('click', function () {
-    includes.length = 0;
-    updateFilter();
-  });
-  allTr.append(allTd);
-  filterRows.append(allTr);
-  const template = document.getElementById('filterRow');
-  let column = 0;
-  let currentRow;
-  let tr;
-  groups.forEach(e => {
-    if (column === 0) {
-      currentRow = template.content.cloneNode(true);
-      tr = currentRow.querySelector('tr');
-      filterRows.append(currentRow);
-    }
-    tr.children[column].append(imgFromRes(e));
-    tr.children[column].addEventListener('click', function () {
-      let el = includes.filter(i => i === e)[0];
-      if (el) {
-        includes = includes.filter(i => i !== e);
-      } else {
-        includes.push(e);
-      }
-      updateFilter();
-    });
-    column = (column + 1) % maxColumn;
-  });
-  updateElement('filterIncludes', filterRows);
-}
-
-
 
 
 
@@ -546,62 +387,6 @@ function updateDetails(item) {
 
 
 
-
-function updateTable() {
-  const foodData = state.food;
-  const foodRows = document.createDocumentFragment();
-  let rows = 0;
-  for (const food of foodData) {
-    const foodRow = createFoodRow(food);
-    foodRows.appendChild(foodRow);
-    rows++;
-    if (rows === limit)
-      break;
-  }
-  updateElement('foods', foodRows);
-}
-
-function createFoodRow(food) {
-  const template = document.getElementById('food');
-  const foodRow = template.content.cloneNode(true);
-  const tr = foodRow.querySelector('tr');
-  let img = imgFromRes(food.name);
-  if (!img) {
-    img = document.createElement('img');
-    img.setAttribute('src', '/img/' + food.res + '.png');
-    img.setAttribute('height', '32px');
-  }
-  tr.children[0].append(img);
-  tr.children[1].textContent = food.name;
-  tr.children[2].append(prepareIngredients(food.ingredients));
-  let index = 3;
-  stats.forEach((s, i) => {
-    addFepToRow(tr.children[index + i], s.code, food);
-  });
-  index += stats.length;
-  tr.children[index++].textContent = round(food.fepSum / food.hunger);
-  tr.children[index++].textContent = food.fepSum;
-  tr.children[index++].textContent = food.hunger;
-  tr.children[index++].textContent = food.energy;
-  tr.children[index++].textContent = round(food.energy / food.hunger);
-  return foodRow;
-}
-
-function prepareIngredients(ingredients) {
-  const div = document.createElement('div');
-  ingredients.forEach(i => {
-    let img = imgFromRes(i);
-    if (img) {
-      div.append(img);
-    } else {
-      const span = document.createElement('span');
-      span.textContent = i;
-      div.append(span);
-    }
-  });
-  return div;
-}
-
 function imgFromRes(name, size) {
   size = size ? size : '32px';
   let imgRes = state.resources[name];
@@ -626,35 +411,10 @@ function imgFromRes(name, size) {
   }
 }
 
-function addFepToRow(cell, name, food) {
-  const lineBreak = document.createElement('br');
-  const fep = document.createElement('span');
-  let fepV = food.feps[name + '1'];
-  fep.textContent = fepV ? fepV : ' ';
-  const fep2 = document.createElement('span');
-  let fepV2 = food.feps[name + '2'];
-  fep2.textContent = fepV2 ? fepV2 : ' ';
-  fep2.classList = ['db'];
-  cell.append(fep);
-  cell.append(lineBreak);
-  cell.append(fep2);
-}
-
 function updateElement(id, data) {
   const element = document.getElementById(id);
   element.textContent = '';
   element.append(data);
-}
-
-function fepListToObject(fepList) {
-  let fepObj = {};
-  fepList.forEach(f => {
-    let name = f.name.split(' ')[0];
-    let mult = f.name.split(' ')[1];
-    let stat = stats.filter(s => s.name === name)[0];
-    fepObj[stat.code + mult.replace('+', '')] = f.value;
-  });
-  return fepObj;
 }
 
 function interpolateCoords(coords, marketName) {

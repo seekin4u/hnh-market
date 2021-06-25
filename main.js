@@ -6,6 +6,7 @@ const sharp = require('sharp');
 
 const app = express();
 const port = 5000;
+const dataPath = 'data.json';
 
 const paths = [];
 
@@ -39,6 +40,18 @@ const downloadFile = (async (url, path) => {
 
 const allFood = [];
 let stalls = [];
+let loadedStalls = [];
+
+function readStalls() {
+  if (!fs.existsSync(dataPath)) return [];
+  let stalls = JSON.parse(fs.readFileSync(dataPath));
+  stalls.forEach(s => updateStallGfxs(s.rows));
+  return stalls;
+}
+
+function saveStalls() {
+  return fs.writeFileSync(dataPath, JSON.stringify(stalls));
+}
 
 const statsOrder = {};
 statsOrder['gfx/hud/chr/str'] = 0;
@@ -912,6 +925,9 @@ const resources = {
 };
 
 
+stalls = readStalls();
+loadedStalls = readStalls();
+
 fetch('https://hnhfood.vatsul.com/api/data/food-info2.json')
   .then(res => res.json())
   .then(data => {
@@ -982,10 +998,15 @@ app.get('/api/resources', (req, res) => {
   res.json({ data: resources });
 });
 app.get('/api/stalls', (req, res) => {
-  res.json(stalls);
+  res.json(loadedStalls);
 });
 app.get('/api/stalls/clear', (req, res) => {
   stalls = [];
+  res.json({ data: 'ok' });
+});
+app.get('/api/stalls/publish', (req, res) => {
+  loadedStalls = [...stalls];
+  saveStalls();
   res.json({ data: 'ok' });
 });
 app.post('/api/stalls/add', (req, res) => {
@@ -995,28 +1016,33 @@ app.post('/api/stalls/add', (req, res) => {
   } else {
     stalls.push(req.body);
   }
-  const resources = [];
   if (req.body.rows) {
-    req.body.rows.forEach(s => {
-      if (s) {
-        if (s.item) {
-          s.item.gfx = mapGfx(s.item.gfx, s.item.name);
-          resources.push(s.item.gfx);
-          if (s.item.additionalInfo) {
-            mapAdditionalInfo(s.item.additionalInfo, s.item);
-            resources.push(...extractFields(s.item.additionalInfo, 'gfx'));
-          }
-        }
-        if (s.price) {
-          s.price.gfx = mapGfx(s.price.gfx, s.price.name);
-          resources.push(s.price.gfx);
-        }
-      }
-    });
+    updateStallGfxs(req.body.rows);
   }
-  resources.forEach(updateGfx);
   res.json({ data: 'ok' });
 });
+
+function updateStallGfxs(shopBoxes) {
+  const resources = [];
+  shopBoxes.forEach(s => {
+    if (s) {
+      if (s.item) {
+        s.item.gfx = mapGfx(s.item.gfx, s.item.name);
+        resources.push(s.item.gfx);
+        if (s.item.additionalInfo) {
+          mapAdditionalInfo(s.item.additionalInfo, s.item);
+          resources.push(...extractFields(s.item.additionalInfo, 'gfx')
+            .filter(e => !e.includes('/gems/')));
+        }
+      }
+      if (s.price) {
+        s.price.gfx = mapGfx(s.price.gfx, s.price.name);
+        resources.push(s.price.gfx);
+      }
+    }
+  });
+  resources.forEach(updateGfx);
+}
 
 function mapGfx(gfx, name) {
   if (gfx === 'gfx/invobjs/gems/gemstone') {

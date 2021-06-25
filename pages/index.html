@@ -134,71 +134,7 @@
       </svg>
     </div>
   </div>
-  <hr />
-  <div>
-    <label for="name">Name: </label>
-    <input type="text"
-           id="name"
-           name="name" />
-  </div>
-  <table class="filter-table">
-    <thead>
-      <tr>
-        <th colspan="4">Includes</th>
-      </tr>
-    </thead>
-    <tbody id="filterIncludes">
-    </tbody>
-  </table>
-  <table class="food-table">
-    <thead>
-      <tr>
-        <th></th>
-        <th style="max-width:400px"
-            class="sortable">name</th>
-        <th style="width:192px">ingredients</th>
-        <th id="str"
-            class="sortable stat">str</th>
-        <th id="agi"
-            class="sortable stat">agi</th>
-        <th id="int"
-            class="sortable stat">int</th>
-        <th id="con"
-            class="sortable stat">con</th>
-        <th id="per"
-            class="sortable stat">per</th>
-        <th id="cha"
-            class="sortable stat">cha</th>
-        <th id="dex"
-            class="sortable stat">dex</th>
-        <th id="wil"
-            class="sortable stat">wil</th>
-        <th id="psy"
-            class="sortable stat">psy</th>
-        <th class="sortable statw"
-            id="fepHunger">FEP/ Hunger</th>
-        <th class="sortable statw"
-            id="fepSum">Total FEP</th>
-        <th class="sortable statw"
-            id="hunger">Hunger</th>
-        <th class="sortable statw"
-            id="energy">Energy</th>
-        <th class="sortable statw"
-            id="energyHunger">Energy/ Hunger</th>
-      </tr>
-    </thead>
-    <tbody id="foods"></tbody>
-  </table>
-  </div>
 
-  <template id="filterRow">
-    <tr>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-  </template>
   <template id="item-details">
     <div id="details-title"></div>
     <div id="details-left"></div>
@@ -215,27 +151,6 @@
       <td class="stat"></td>
       <td class="stat"></td>
       <td class="stat"></td>
-    </tr>
-  </template>
-  <template id="food">
-    <tr>
-      <td class="img"></td>
-      <td style="font-weight: bold;"></td>
-      <td></td>
-      <td class="str stat"></td>
-      <td class="agi stat"></td>
-      <td class="int stat"></td>
-      <td class="con stat"></td>
-      <td class="per stat"></td>
-      <td class="cha stat"></td>
-      <td class="dex stat"></td>
-      <td class="wil stat"></td>
-      <td class="psy stat"></td>
-      <td class="statw"></td>
-      <td class="statw"></td>
-      <td class="statw"></td>
-      <td class="statw"></td>
-      <td class="statw"></td>
     </tr>
   </template>
 </body>
