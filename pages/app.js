@@ -1,5 +1,5 @@
 const limit = 100;
-const local = true;
+const local = false;
 const url = local ? 'http://localhost:5000' : 'https://hnh-market.junespark.net';
 
 let state = Object.freeze({
