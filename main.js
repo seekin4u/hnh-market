@@ -2,9 +2,10 @@ const fetch = require('node-fetch');
 const express = require('express')
   , bodyParser = require('body-parser');
 const fs = require('fs');
+const sharp = require('sharp');
 
 const app = express();
-const port = 5001;
+const port = 5000;
 
 const paths = [];
 
@@ -16,11 +17,52 @@ const downloadFile = (async (url, path) => {
   console.log('updating ' + path);
   fetch(url)
     .then(x => x.arrayBuffer())
-    .then(x => fs.writeFileSync(path, Buffer.from(x)));
+    .then(x => {
+      if (path.includes('/gems/')) {
+        const image = sharp(Buffer.from(x));
+        image.metadata()
+          .then(function (metadata) {
+            return image
+              .extend({
+                top: 16 - Math.floor(metadata.height / 2),
+                bottom: 16 - Math.ceil(metadata.height / 2),
+                left: 16 - Math.floor(metadata.width / 2),
+                right: 16 - Math.ceil(metadata.width / 2),
+                background: { r: 0, g: 0, b: 0, alpha: 0 }
+              })
+              .toBuffer()
+              .then(x => fs.writeFileSync(path, x));
+          })
+      }
+    });
 });
 
 const allFood = [];
 let stalls = [];
+
+const statsOrder = {};
+statsOrder['gfx/hud/chr/str'] = 0;
+statsOrder['gfx/hud/chr/agi'] = 1;
+statsOrder['gfx/hud/chr/int'] = 2;
+statsOrder['gfx/hud/chr/con'] = 3;
+statsOrder['gfx/hud/chr/per'] = 4;
+statsOrder['gfx/hud/chr/cha'] = 5;
+statsOrder['gfx/hud/chr/dex'] = 6;
+statsOrder['gfx/hud/chr/wil'] = 7;
+statsOrder['gfx/hud/chr/psy'] = 8;
+statsOrder['gfx/hud/chr/unarmed'] = 100;
+statsOrder['gfx/hud/chr/melee'] = 101;
+statsOrder['gfx/hud/chr/marksmanship'] = 102;
+statsOrder['gfx/hud/chr/exploration'] = 103;
+statsOrder['gfx/hud/chr/stealth'] = 104;
+statsOrder['gfx/hud/chr/sewing'] = 105;
+statsOrder['gfx/hud/chr/smithing'] = 106;
+statsOrder['gfx/hud/chr/masonry'] = 107;
+statsOrder['gfx/hud/chr/carpentry'] = 108;
+statsOrder['gfx/hud/chr/cooking'] = 109;
+statsOrder['gfx/hud/chr/farming'] = 110;
+statsOrder['gfx/hud/chr/survival'] = 111;
+statsOrder['gfx/hud/chr/lore'] = 112;
 
 const resources = {
 
@@ -276,10 +318,46 @@ const resources = {
   'Walrus': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-walrus' },
   'Wild Beef': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-aurochs' },
   'Wild Horse': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-wildhorse' },
-  'Wild Mutton': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-wildgoat' },
-  'Wildgoat': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-wildgoat' },// ????
+  'Wild Mutton': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-mouflon' },
+  'Wildgoat': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-wildgoat' },
   'Wolf': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-wolf' },
   'Wolverine': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-wolverine' },
+
+  'Raw Adder': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-adder' },
+  'Raw Badger': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-badger' },
+  'Raw Bat': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-bat' },
+  'Raw Bear': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-bear' },
+  'Raw Beaver': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-beaver' },
+  'Raw Beef': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-cow' },
+  'Raw Boar': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-boar' },
+  'Raw Bog turtle': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-bogturtle' },
+  'Raw Cachalot': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-spermwhale' },
+  'Raw Caverat': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-caverat' },
+  'Raw Fox': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-fox' },
+  'Raw Goat': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-goat' },
+  'Raw Grey Seal': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-greyseal' },
+  'Raw Hedgehog': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-hedgehog' },
+  'Raw Horse': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-horse' },
+  'Raw Lynx': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-lynx' },
+  'Raw Mammoth': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-mammoth' },
+  'Raw Mole': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-mole' },
+  'Raw Moose': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-moose' },
+  'Raw Mutton': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-sheep' },
+  'Raw Orca': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-orca' },
+  'Raw Otter': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-otter' },
+  'Raw Pork': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-pig' },
+  'Raw Rabbit': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-rabbit' },
+  'Raw Reindeer Venison': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-reindeer' },
+  'Raw Squirrel': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-squirrel' },
+  'Raw Stoat': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-stoat' },
+  'Raw Venison': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-reddeer' },
+  'Raw Walrus': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-walrus' },
+  'Raw Wild Beef': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-aurochs' },
+  'Raw Wild Horse': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-wildhorse' },
+  'Raw Wild Mutton': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-mouflon' },
+  'Raw Wildgoat': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-wildgoat' },
+  'Raw Wolf': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-wolf' },
+  'Raw Wolverine': { res: 'gfx/invobjs/meat-raw', mod: 'gfx/invobjs/meat-wolverine' },
 
   'Smoked Adder': { res: 'gfx/invobjs/meat-smoked', mod: 'gfx/invobjs/meat-adder' },
   'Smoked Badger': { res: 'gfx/invobjs/meat-smoked', mod: 'gfx/invobjs/meat-badger' },
@@ -921,10 +999,18 @@ app.post('/api/stalls/add', (req, res) => {
   if (req.body.rows) {
     req.body.rows.forEach(s => {
       if (s) {
-        if (s.item)
-        resources.push(s.item.gfx);
-        if (s.price)
-        resources.push(s.price.gfx);
+        if (s.item) {
+          s.item.gfx = mapGfx(s.item.gfx, s.item.name);
+          resources.push(s.item.gfx);
+          if (s.item.additionalInfo) {
+            mapAdditionalInfo(s.item.additionalInfo, s.item);
+            resources.push(...extractFields(s.item.additionalInfo, 'gfx'));
+          }
+        }
+        if (s.price) {
+          s.price.gfx = mapGfx(s.price.gfx, s.price.name);
+          resources.push(s.price.gfx);
+        }
       }
     });
   }
@@ -932,8 +1018,78 @@ app.post('/api/stalls/add', (req, res) => {
   res.json({ data: 'ok' });
 });
 
+function mapGfx(gfx, name) {
+  if (gfx === 'gfx/invobjs/gems/gemstone') {
+    let gemNames = name.split(' ');
+    return 'gfx/invobjs/gems/' + gemNames[0].toLowerCase() + '-' + gemNames[1].toLowerCase();
+  }
+  return gfx;
+}
+
+function mapAdditionalInfo(info, item) {
+  if (info.gilded) {
+    let gildStats = info.gilded.gildings.reduce((a, b) => {
+      b.info.forEach(m => {
+        let mod = a.filter(e => e.attr.gfx === m.attr.gfx)[0];
+        if (!mod) {
+          mod = { attr: m.attr, mod: 0 };
+          a.push(mod);
+        }
+        mod.mod += m.mod;
+      });
+      return a;
+    }, []);
+    if (info.mods) {
+      info.mods = [...gildStats, ...info.mods].reduce((a, v) => {
+        let mod = a.filter(e => e.attr.gfx === v.attr.gfx)[0];
+        if (!mod) {
+          mod = { attr: v.attr, mod: 0 };
+          a.push(mod);
+        }
+        mod.mod += v.mod;
+        return a;
+      }, [])
+    } else {
+      info.mods = gildStats
+    };
+  }
+  if (info.mods) {
+    info.mods = info.mods.sort((a, b) => getStartOrder(a.attr.gfx) - getStartOrder(b.attr.gfx));
+  }
+  if (info.contents) {
+    let contents = info.contents;
+    let containerName = item.name;
+    let containerQuality = item.quality;
+    item.name = contents.count + contents.unit + ' of ' + contents.name;
+    item.quality = contents.quality;
+    info.container = {
+      name: containerName,
+      quality: containerQuality
+    }
+  }
+  return info;
+}
+
+function getStartOrder(gfx) {
+  return statsOrder[gfx] ? statsOrder[gfx] : 1000;
+}
+
 function compareCoords(coord1, coord2) {
   return coord1.x === coord2.x && coord1.y === coord2.y;
+}
+
+function extractFields(o, f, fields) {
+  if (!o || !(typeof o === 'object')) return [];
+  fields = fields ? fields : [];
+  let objects = Array.isArray(o) ? o : [o];
+  objects.forEach(e => {
+    if (e[f])
+      fields.push(e[f]);
+    Object.keys(e)
+      .filter(k => k != '0')
+      .forEach(key => extractFields(e[key], f, fields));
+  });
+  return fields;
 }
 
 const server = app.listen(port);
