@@ -106,7 +106,7 @@ function updateItemFilter() {
     .filter(i => i.item.name.toLowerCase().includes(name))
     .filter(i => i.price.name.toLowerCase().includes(price))
     .filter(i => !i.item.quality || i.item.quality >= qMin)
-    .filter(i => !i.item.quality || i.item.quality <= qMax )
+    .filter(i => !i.item.quality || i.item.quality <= qMax)
     .filter(i => i.price.quality >= pqMin)
     .filter(i => i.price.quality <= pqMax)
     .filter(i => i.price.amount >= paMin)
@@ -121,7 +121,7 @@ function updateItemFilter() {
     .filter(i => !coinage || i.item.additionalInfo.coinage)
     .filter(i => marketData[i.marketId].selected)
     ;
-  
+
 
   updateState('items', filteredItems);
   updateStall();
@@ -171,7 +171,7 @@ async function update() {
     let s = stallData[i];
     stalls.push({ coord: s.coord, market: s.market, id: i });
     s.rows.filter(e => e.item)
-      .forEach(e => items.push({ ...e, stallId: i, marketId: marketByName(s.market).id}));
+      .forEach(e => items.push({ ...e, stallId: i, marketId: marketByName(s.market).id }));
     items.forEach(e => e.leftNum = parseInt(e.left))
     items.forEach(e => e.item.quality = e.item.quality || 0);
   }
@@ -261,7 +261,7 @@ function createItemRow(item) {
 
 function updateMap(market, stall) {
   let map = document.getElementById('map-gfx');
-  map.style.background = 'url(' + market.gfx +')';
+  map.style.background = 'url(' + market.gfx + ')';
   document.getElementById('map-title').textContent = market.name;
   document.getElementById('map-link').setAttribute('href', market.mapUrl);
   if (!stall) return;
@@ -339,6 +339,30 @@ function updateDetails(item) {
     }
     if (info.container) {
       div.append(divWithText('Inside ' + info.container.name + ' Q' + Math.round(info.container.quality)));
+    }
+    if (info.contents && info.contents.elixir) {
+      let elixir = info.contents.elixir;
+      elixir.eff = elixir.eff || [];
+      div.append(divWithText('Elixir:'));
+      div.append(withAttribute(divWithText('Duration:' + toTime(elixir.time)), 'style', 'padding-left: 12px'));
+      elixir.eff.map(e => {
+        let text;
+        switch (e.eff) {
+          case "heal":
+            text = 'Heals ' + e.name + ' by ' + e.mod;
+            break;
+          case "wound":
+            text = 'Adds wound ' + e.name + ' of ' + e.mod;
+            break;
+          case "mod":
+            text = 'Buffs ' + e.name + ' by ' + e.mod;
+            break;
+        }
+        return withClass(
+          divWithText(text, e.gfx),
+          e.mod > 0 && e.eff !== "wound" ? 'positive' : 'negative');
+      }).map(e => withAttribute(e, 'style', 'padding-left: 12px;'))
+        .forEach(e => div.append(e));
     }
     if (info.armor) {
       div.append(divWithText('Armor:' + info.armor.hard + '/' + info.armor.soft));
@@ -433,11 +457,11 @@ function updateDetails(item) {
     val -= hours * hoursMod;
     let minutes = Math.floor(val / minutesMod);
     val -= minutes * minutesMod;
-    return weeks ? (weeks + 'w ') : ''
-      + days ? (days + 'd ') : ''
-        + hours ? (hours + 'h ') : ''
-          + minutes ? (minutes + 'm ') : ''
-            + val ? (val + 's') : ''
+    return (weeks ? (weeks + 'w ') : '')
+      + (days ? (days + 'd ') : '')
+      + (hours ? (hours + 'h ') : '')
+      + (minutes ? (minutes + 'm ') : '')
+      + (val ? (val + 's') : '');
   }
 }
 

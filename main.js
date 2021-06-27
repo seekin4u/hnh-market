@@ -1012,6 +1012,7 @@ app.get('/api/stalls/publish', (req, res) => {
   res.json({ data: 'ok' });
 });
 app.post('/api/stalls/add', (req, res) => {
+  console.log('post');
   let stall = stalls.filter(e => compareCoords(req.body.coord, e.coord))[0];
   if (stall) {
     stall.rows = req.body.rows;
