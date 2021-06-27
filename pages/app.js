@@ -1,5 +1,5 @@
 const limit = 100;
-const local = false;
+const local = true;
 const url = local ? 'http://localhost:5000' : 'https://hnh-market.junespark.net';
 
 let state = Object.freeze({
@@ -10,9 +10,18 @@ update();
 
 let marketData = [
   {
+    name: 'Finloch Market',
+    vcCoords: { x: 150, y: 87 },
+    scale: 0.18,
+    gfx: '/img/finloch.png',
+    mapUrl: 'https://vatsul.com/HnHMap/map?markers=3e025001f3d8881739374ed96285647ab1c6d4879ed34fc5705a917d223d728f#x=73.96&y=320.68&zoom=9'
+  },
+  {
     name: 'Linch Market',
     vcCoords: { x: 148, y: 150 },
-    scale: 0.27
+    scale: 0.27,
+    gfx: '/img/linchik.png',
+    mapUrl: 'https://vatsul.com/HnHMap/map?markers=fa6a8b97e9a7835588671662d5648fef36598c082c41309ed43172494f09e425#x=175.06&y=155.21&zoom=9',
   }
 ];
 
@@ -63,13 +72,14 @@ function updateItemFilter() {
   let symbel = document.getElementById('filter-item-symbel').checked;
   let curio = document.getElementById('filter-item-curio').checked;
   let gilding = document.getElementById('filter-item-gilding').checked;
+  let coinage = document.getElementById('filter-item-coinage').checked;
 
   let filteredItems = itemsAll
     .filter(i => i.item)
     .filter(i => i.item.name.toLowerCase().includes(name))
     .filter(i => i.price.name.toLowerCase().includes(price))
-    .filter(i => i.item.quality >= qMin)
-    .filter(i => i.item.quality <= qMax)
+    .filter(i => !i.item.quality || i.item.quality >= qMin)
+    .filter(i => !i.item.quality || i.item.quality <= qMax )
     .filter(i => i.price.quality >= pqMin)
     .filter(i => i.price.quality <= pqMax)
     .filter(i => i.price.amount >= paMin)
@@ -81,6 +91,7 @@ function updateItemFilter() {
     .filter(i => !symbel || i.item.additionalInfo.hungerReduction)
     .filter(i => !curio || i.item.additionalInfo.curio)
     .filter(i => !gilding || i.item.additionalInfo.gilding)
+    .filter(i => !coinage || i.item.additionalInfo.coinage)
     ;
 
   updateState('items', filteredItems);
@@ -130,19 +141,26 @@ async function update() {
   for (let i = 0; i < stallData.length; i++) {
     let s = stallData[i];
     stalls.push({ coord: s.coord, market: s.market, id: i });
-    s.rows.forEach(e => items.push({ ...e, stallId: i }));
-    items.forEach(e => e.leftNum = parseInt(e.left));
+    s.rows.filter(e => e.item)
+      .forEach(e => items.push({ ...e, stallId: i }));
+    items.forEach(e => e.leftNum = parseInt(e.left))
+    items.forEach(e => e.item.quality = e.item.quality || 0);
   }
   updateState('resources', dataRes.data);
   updateState('stalls', stalls);
   updateState('itemsAll', items);
-  updateState('items', items.filter(e => e.item));
+  updateState('items', items);
   updateStall();
+  updateMap(marketData[0]);
 }
 
 function sortBy(field, asc) {
   let order = asc ? -1 : 1;
-  return (a, b) => extractField(a, field) > extractField(b, field) ? order : -order;
+  return (a, b) => {
+    const valA = extractField(a, field);
+    const valB = extractField(b, field);
+    return valA > valB ? order : -order
+  };
 }
 
 function extractField(value, field) {
@@ -163,9 +181,9 @@ function sortByStat(stat, asc) {
 }
 
 
-
 function updateStall() {
   const itemData = state.items;
+  const stallData = state.stalls;
   const itemRows = document.createDocumentFragment();
   for (const item of itemData) {
     if (item.item) {
@@ -201,18 +219,28 @@ function createItemRow(item) {
   tr.children[6].textContent = item.price.quality ? Math.round(item.price.quality) : 'Any';
   tr.children[7].textContent = item.left;
   tr.setAttribute('id', item.stallId);
-  tr.addEventListener('mouseenter', function (e) {
-    let stall = state.stalls.filter(e => e.id === item.stallId)[0];
-    let marker = document.getElementById('marker');
-    if (stall && marker) {
-      let coords = interpolateCoords(stall.coord, stall.market);
-      marker.setAttribute('cx', coords.x);
-      marker.setAttribute('cy', coords.y);
-      marker.setAttribute('r', 5);
-    }
+  tr.addEventListener('mouseenter', function (ev) {
     updateDetails(item);
+    let stall = state.stalls.filter(e => e.id === item.stallId)[0];
+    let market = marketByName(stall && stall.market);
+    if (stall && market) {
+      updateMap(market, stall);
+    }
   });
   return itemRow;
+}
+
+function updateMap(market, stall) {
+  let map = document.getElementById('map-gfx');
+  map.style.background = 'url(' + market.gfx +')';
+  document.getElementById('map-title').textContent = market.name;
+  document.getElementById('map-link').setAttribute('href', market.mapUrl);
+  if (!stall) return;
+  let coords = interpolateCoords(stall.coord, market);
+  let marker = document.getElementById('marker');
+  marker.setAttribute('cx', coords.x);
+  marker.setAttribute('cy', coords.y);
+  marker.setAttribute('r', 5);
 }
 
 function updateDetails(item) {
@@ -228,7 +256,6 @@ function updateDetails(item) {
   img.setAttribute('height', '32px');
   img.classList = ['img-left'];
   itemDiv.children[0].append(img);
-  itemDiv.children[0].setAttribute('style', 'background-color: rgba(255,155,0,0.2); font-weight:bold');
   itemDiv.children[1].textContent = item.left;
   prepareDetails(item.item.additionalInfo, itemDiv.children[2]);
   itemDiv.children[3].textContent = item.price.name + (item.price.quality ? (' Q' + item.price.quality) : '') + ' x' + item.price.amount;
@@ -417,11 +444,14 @@ function updateElement(id, data) {
   element.append(data);
 }
 
-function interpolateCoords(coords, marketName) {
-  let market = marketData.filter(e => e.name === marketName)[0];
+function interpolateCoords(coords, market) {
   if (!market) return { x: 0, y: 0 };
   return {
     x: market.vcCoords.x - coords.x * market.scale,
     y: market.vcCoords.y - coords.y * market.scale
   }
+}
+
+function marketByName(marketName) {
+  return marketData.filter(e => e.name === marketName)[0];
 }

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0">
-  <title>HnH - food</title>
+  <title>HnH - market</title>
   <link rel="stylesheet"
         href="styles.css">
   <script src="app.js"
@@ -18,21 +18,20 @@
            style="max-width:1200px;float:left">
       <thead>
         <tr>
-          <th></th>
-          <th style="max-width:400px"
-              class="sortable"
+          <th class="gfx"></th>
+          <th class="sortable name"
               id="iName">name</th>
           <th id="iQuality"
-              class="sortable stat">quality</th>
-          <th></th>
+              class="sortable info">quality</th>
+          <th class="gfx"></th>
           <th id="price"
-              class="sortable">price</th>
+              class="sortable name">price</th>
           <th id="pAmount"
-              class="sortable stat">amount</th>
+              class="sortable info">amount</th>
           <th id="pQuality"
-              class="sortable stat">quality</th>
+              class="sortable info">quality</th>
           <th id="iLeft"
-              class="sortable stat">left</th>
+              class="sortable info">left</th>
         </tr>
       </thead>
       <tbody id="items"></tbody>
@@ -119,15 +118,24 @@
                name="gilding">
         <label for="filter-item-gilding">Gilding</label>
       </div>
+      <div class="checkbox">
+        <input type="checkbox"
+               id="filter-item-coinage"
+               class="checkbox-filter"
+               name="coinage">
+        <label for="filter-item-coinage">Coin</label>
+      </div>
     </div>
     <div id="details-container">
       Hover item for details
     </div>
     <div id="map"
-         style="background: url('/img/linchik.png') no-repeat; width:300px; height:300px; opacity: 0.5; float:right">
-      <svg xmlns="http://www.w3.org/2000/svg"
+         style="float:right; width:300px;">
+         <div id="map-title">Market</div>
+         <div id="map-details">Market can be found <a id="map-link">here</a></div>
+         <svg id="map-gfx" xmlns="http://www.w3.org/2000/svg"
            xmlns:xlink="http://www.w3.org/1999/xlink"
-           style="height:100%; width:100%;">
+           style="opacity:0.9; height:300px; width:300px; display:block;">
         <circle id="marker"
                 stroke-opacity="1"
                 class="marker"></circle>

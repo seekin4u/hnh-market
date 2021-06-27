@@ -2,7 +2,10 @@ body {
   background-color: #2f3136;
   color: #ddd;
   font-family: Verdana, sans-serif;
-  font-size: 14px
+  font-size: 14px;
+}
+a {
+  color: gold;
 }
 
 .filter-table {
@@ -20,8 +23,7 @@ body {
 
 .food-table {
   border-spacing: 0;
-  max-width:1500px;
-  width: 100%;
+  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
 
 .food-table>tbody>tr {
@@ -31,11 +33,32 @@ body {
 
 .food-table>thead>tr>th {
   background-color: rgba(0, 0, 0, .3);
+  height:32px;
+}
+
+.food-table>thead>tr>th {
+  background-color: rgba(0, 0, 0, .3);
 }
 
 .food-table>thead>tr>th.sortable:hover {
   background-color: rgba(0, 0, 0, .1);
   cursor: pointer;
+}
+
+.food-table>thead>tr>th {
+  box-sizing:border-box;
+}
+
+.food-table>thead>tr>th.name {
+  width:300px;
+}
+
+.food-table>thead>tr>th.info {
+  width:72px;
+}
+
+.food-table>thead>tr>th.gfx {
+  width:72px;
 }
 
 .food-table>tbody>tr>td {
@@ -165,9 +188,17 @@ img.img-left {
   right: 12px;
   bottom: 12px;
   position: fixed;
-  border: 2px solid rgba(190, 190, 190, .6);
-  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, .6);
+  background-color: rgba(0, 0, 0, .3);
 }
+#map-title {
+  font-weight:bold;
+  font-size:large;
+  text-align: center;
+  padding:4px;
+  text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
+}
+
 #item-filter {
   text-align: center;
   right: 12px;
@@ -175,8 +206,8 @@ img.img-left {
   width:300px;
   height:300px;
   position: fixed;
-  border: 2px solid rgba(190, 190, 190, .6);
-  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, .6);
+  background-color: rgba(0, 0, 0, .3);
 }
 #item-filter > .checkbox {
   float: left;
@@ -189,7 +220,7 @@ img.img-left {
   padding: 3px;
   font-size: larger;
   box-sizing: border-box;
-  border-bottom: 1px solid rgba(190, 190, 190, .6);;
+  border-bottom: 1px solid rgba(195, 195, 195, 0.6);
   outline: none;
   background: rgba(0, 0, 0, 0);
   color: #ddd;
@@ -210,6 +241,10 @@ img.img-left {
   width:300px;
   opacity: 1;
   background-color: rgba(0, 0, 0, .3);
-  border: 2px solid rgba(190, 190, 190, .6);
-  box-sizing: border-box;
+  border: 1px solid rgba(0, 0, 0, .6);
+  text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+}
+#details-title {
+  background-color: rgba(255,155,0,0.2);
+  font-weight:bold;
 }

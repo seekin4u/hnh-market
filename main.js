@@ -1027,21 +1027,18 @@ app.post('/api/stalls/add', (req, res) => {
 function updateStallGfxs(shopBoxes) {
   const resources = [];
   shopBoxes.forEach(s => {
-    if (s) {
-      if (s.item) {
-        s.item.gfx = mapGfx(s.item.gfx, s.item.name);
-        resources.push(s.item.gfx);
-        if (s.item.additionalInfo) {
-          mapAdditionalInfo(s.item.additionalInfo, s.item);
-          resources.push(...extractFields(s.item.additionalInfo, 'gfx')
-            .filter(e => !e.includes('/gems/')));
-        }
-      }
-      if (s.price) {
-        s.price.gfx = mapGfx(s.price.gfx, s.price.name);
-        resources.push(s.price.gfx);
-      }
+    if (s && s.item && s.item.additionalInfo) {
+      mapAdditionalInfo(s.item.additionalInfo, s.item);
     }
+    let gfxO = [
+      ...extractObjectsWithFields(s, ['gfx', 'name']),
+      ...extractObjectsWithFields(s, ['gfx', 'attr'])
+    ];
+    gfxO.map(e => {
+      e.gfx = mapGfx(e.gfx, e.name)
+      return e;
+    });
+    resources.push(...gfxO.map(e => e.gfx));
   });
   resources.forEach(updateGfx);
 }
@@ -1049,7 +1046,10 @@ function updateStallGfxs(shopBoxes) {
 function mapGfx(gfx, name) {
   if (gfx === 'gfx/invobjs/gems/gemstone') {
     let gemNames = name.split(' ');
-    return 'gfx/invobjs/gems/' + gemNames[0].toLowerCase() + '-' + gemNames[1].toLowerCase();
+    gfx = 'gfx/invobjs/gems/' + gemNames[0].toLowerCase() + '-' + gemNames[1].toLowerCase();
+  }
+  if (gfx.endsWith('/con')) {
+    gfx = gfx.replace('/con', '/cons');
   }
   return gfx;
 }
@@ -1095,6 +1095,9 @@ function mapAdditionalInfo(info, item) {
       quality: containerQuality
     }
   }
+  if (info.coinage) {
+    item.name = item.name + ' ' + info.coinage;
+  }
   return info;
 }
 
@@ -1104,6 +1107,24 @@ function getStartOrder(gfx) {
 
 function compareCoords(coord1, coord2) {
   return coord1.x === coord2.x && coord1.y === coord2.y;
+}
+
+function extractObjectsWithFields(o, f, acc) {
+  if (!o || !(typeof o === 'object')) return [];
+  acc = acc ? acc : [];
+  let objects = Array.isArray(o) ? o : [o];
+  objects.forEach(e => {
+    if (containFields(e, f))
+      acc.push(e);
+    Object.keys(e)
+      .filter(k => k != '0')
+      .forEach(key => extractObjectsWithFields(e[key], f, acc));
+  });
+  return acc;
+}
+
+function containFields(o, f) {
+  return f.filter(e => o[e]).length === f.length;
 }
 
 function extractFields(o, f, fields) {
