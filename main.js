@@ -1095,7 +1095,7 @@ function mapAdditionalInfo(info, item) {
       quality: containerQuality
     }
   }
-  if (info.coinage) {
+  if (info.coinage && !item.name.endsWith(info.coinage)) {
     item.name = item.name + ' ' + info.coinage;
   }
   return info;
