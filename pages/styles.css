@@ -215,6 +215,15 @@ img.img-left {
   padding: 2px 6px;
   width:40%;
 }
+#market-filters > .checkbox {
+  float: left;
+  text-align: left;
+  padding: 2px 6px;
+  width:80%;
+}
+#market-filters {
+  float: left;
+}
 #item-filter > input[type="text"] {
   border: none;
   padding: 3px;

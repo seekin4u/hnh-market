@@ -14,7 +14,9 @@ let marketData = [
     vcCoords: { x: 150, y: 87 },
     scale: 0.18,
     gfx: '/img/finloch.png',
-    mapUrl: 'https://vatsul.com/HnHMap/map?markers=3e025001f3d8881739374ed96285647ab1c6d4879ed34fc5705a917d223d728f#x=73.96&y=320.68&zoom=9'
+    mapUrl: 'https://vatsul.com/HnHMap/map?markers=3e025001f3d8881739374ed96285647ab1c6d4879ed34fc5705a917d223d728f#x=73.96&y=320.68&zoom=9',
+    selected: true,
+    id: 0
   },
   {
     name: 'Linch Market',
@@ -22,6 +24,8 @@ let marketData = [
     scale: 0.27,
     gfx: '/img/linchik.png',
     mapUrl: 'https://vatsul.com/HnHMap/map?markers=fa6a8b97e9a7835588671662d5648fef36598c082c41309ed43172494f09e425#x=175.06&y=155.21&zoom=9',
+    selected: true,
+    id: 1
   }
 ];
 
@@ -46,9 +50,32 @@ for (let cf of checkFilters) {
     updateItemFilter();
   });
 }
+const marketFilters = document.getElementById('market-filters');
+
+marketData.forEach(market => {
+  const div = document.createElement('div');
+  div.classList = ['checkbox'];
+  const input = document.createElement('input');
+  const label = document.createElement('label');
+  const id = 'filter-' + market.name.toLowerCase().replace(' ', '-');
+  input.setAttribute('type', 'checkbox');
+  input.classList = ['market-filter'];
+  input.setAttribute('id', id);
+  input.setAttribute('checked', '');
+  label.setAttribute('for', id);
+  label.textContent = market.name;
+  input.addEventListener('change', function (event) {
+    market.selected = input.checked;
+    updateItemFilter();
+  });
+  div.append(input);
+  div.append(label);
+  marketFilters.append(div);
+});
 
 function updateItemFilter() {
   let itemsAll = state.itemsAll;
+  let stalls = state.stalls;
   let name = document.getElementById('filter-item-name').value;
   name = name ? name.toLowerCase() : '';
   let qMin = document.getElementById('filter-item-qmin').value;
@@ -92,7 +119,9 @@ function updateItemFilter() {
     .filter(i => !curio || i.item.additionalInfo.curio)
     .filter(i => !gilding || i.item.additionalInfo.gilding)
     .filter(i => !coinage || i.item.additionalInfo.coinage)
+    .filter(i => marketData[i.marketId].selected)
     ;
+  
 
   updateState('items', filteredItems);
   updateStall();
@@ -142,7 +171,7 @@ async function update() {
     let s = stallData[i];
     stalls.push({ coord: s.coord, market: s.market, id: i });
     s.rows.filter(e => e.item)
-      .forEach(e => items.push({ ...e, stallId: i }));
+      .forEach(e => items.push({ ...e, stallId: i, marketId: marketByName(s.market).id}));
     items.forEach(e => e.leftNum = parseInt(e.left))
     items.forEach(e => e.item.quality = e.item.quality || 0);
   }
