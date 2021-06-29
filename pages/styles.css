@@ -176,10 +176,24 @@ a {
 }
 
 .marker {
-  fill: #52e1e9;
+  fill: #fff;
   stroke: #000;
   stroke-width: 3;
   opacity: 1;
+}
+
+.stall-rect {
+  fill: #fff;
+  stroke: #000;
+  stroke-width: 2;
+  opacity: 1;
+}
+
+.stall-rect:hover, .marker:hover, .marker.selected, .stall-rect.selected {
+  fill: #52e1e9;
+}
+.marker.selected:hover, .stall-rect.selected:hover {
+  fill: #098f8f;
 }
 img.img-left {
   float: left;

@@ -1012,17 +1012,26 @@ app.get('/api/stalls/publish', (req, res) => {
   res.json({ data: 'ok' });
 });
 app.post('/api/stalls/add', (req, res) => {
-  console.log('post');
   let stall = stalls.filter(e => compareCoords(req.body.coord, e.coord))[0];
   if (stall) {
-    stall.rows = req.body.rows;
+    if (!stall.timestamp || req.body.timestamp > stall.timestamp) {
+      console.log(`updating ${stall.market} x:${stall.coord.x}, y:${stall.coord.y};`);
+      stall.rows = req.body.rows;
+    }
   } else {
+    console.log(`adding ${req.body.market} x:${req.body.coord.x}, y:${req.body.coord.y};`);
     stalls.push(req.body);
   }
   if (req.body.rows) {
     updateStallGfxs(req.body.rows);
   }
   res.json({ data: 'ok' });
+});
+app.post('/api/stalls/init', (req, res) => {
+  let reqStalls = req.body;
+  let newStalls = reqStalls.filter(r => !stalls.some(e => compareCoords(e.coord, r.coord)));
+  newStalls.forEach(e => console.log(`adding ${e.market} x:${e.coord.x}, y:${e.coord.y};`));
+  stalls.push(newStalls);
 });
 
 function updateStallGfxs(shopBoxes) {

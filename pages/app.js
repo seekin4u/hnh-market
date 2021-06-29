@@ -1,5 +1,5 @@
 const limit = 100;
-const local = false;
+const local = true;
 const url = local ? 'http://localhost:5000' : 'https://hnh-market.junespark.net';
 
 let state = Object.freeze({
@@ -332,7 +332,7 @@ function updateDetails(item) {
     if (info.dur && info.maxDur) {
       div.append(divWithText('Wear:' + info.dur + '/' + info.maxDur));
     }
-    if (info.hungerReduction && info.fepBonus) {
+    if (info.hungerReduction || info.fepBonus) {
       div.append(divWithText('Symbel:'));
       div.append(withAttribute(divWithText('Hunger reduction:' + (info.hungerReduction * 100).toFixed(2) + '%'), 'style', 'padding-left: 12px'));
       div.append(withAttribute(divWithText('Fep bonus:' + (info.fepBonus * 100).toFixed(2) + '%'), 'style', 'padding-left: 12px'));
