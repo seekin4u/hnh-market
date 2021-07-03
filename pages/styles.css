@@ -218,7 +218,7 @@ img.img-left {
   right: 12px;
   top: 12px;
   width:300px;
-  height:300px;
+  height:324px;
   position: fixed;
   border: 1px solid rgba(0, 0, 0, .6);
   background-color: rgba(0, 0, 0, .3);
@@ -259,7 +259,7 @@ img.img-left {
 }
 #details-container {
   right: 12px;
-  top: 324px;
+  top: 348px;
   position: fixed;
   width:300px;
   opacity: 1;
@@ -270,4 +270,13 @@ img.img-left {
 #details-title {
   background-color: rgba(255,155,0,0.2);
   font-weight:bold;
+}
+#path-container {
+  float: right;
+  width: 300px;
+  background-color: rgba(0, 0, 0, .3);
+  border: 1px solid rgba(0, 0, 0, .6);
+}
+.path-node:hover {
+  background-color: rgba(255, 255, 255, .2);
 }

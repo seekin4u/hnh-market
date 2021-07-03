@@ -6,7 +6,9 @@ const sharp = require('sharp');
 
 const app = express();
 const port = 5000;
-const dataPath = 'data.json';
+const stallDataPath = 'data.json';
+const nodesDataPath = 'data/nodes.json';
+const epsilon = 0.00001;
 
 const paths = [];
 
@@ -45,14 +47,14 @@ let stalls = [];
 let loadedStalls = [];
 
 function readStalls() {
-  if (!fs.existsSync(dataPath)) return [];
-  let stalls = JSON.parse(fs.readFileSync(dataPath));
+  if (!fs.existsSync(stallDataPath)) return [];
+  let stalls = JSON.parse(fs.readFileSync(stallDataPath));
   stalls.forEach(s => updateStallGfxs(s.rows));
   return stalls;
 }
 
 function saveStalls() {
-  return fs.writeFileSync(dataPath, JSON.stringify(stalls));
+  return fs.writeFileSync(stallDataPath, JSON.stringify(stalls));
 }
 
 const statsOrder = {};
@@ -999,8 +1001,16 @@ app.get('/api/food', (req, res) => {
 app.get('/api/resources', (req, res) => {
   res.json({ data: resources });
 });
+app.get('/api/bot/pathing', (req, res) => {
+  let market = req.query.market;
+  res.json(JSON.parse(fs.readFileSync(nodesDataPath))
+    .filter(e => e.market === market)[0]);
+});
 app.get('/api/stalls', (req, res) => {
   res.json(loadedStalls);
+});
+app.get('/api/tmpStalls', (req, res) => {
+  res.json(stalls);
 });
 app.get('/api/stalls/clear', (req, res) => {
   stalls = [];
@@ -1017,6 +1027,7 @@ app.post('/api/stalls/add', (req, res) => {
     if (!stall.timestamp || req.body.timestamp > stall.timestamp) {
       console.log(`updating ${stall.market} x:${stall.coord.x}, y:${stall.coord.y};`);
       stall.rows = req.body.rows;
+      stall.timestamp = req.body.timestamp;
     }
   } else {
     console.log(`adding ${req.body.market} x:${req.body.coord.x}, y:${req.body.coord.y};`);
@@ -1031,7 +1042,7 @@ app.post('/api/stalls/init', (req, res) => {
   let reqStalls = req.body;
   let newStalls = reqStalls.filter(r => !stalls.some(e => compareCoords(e.coord, r.coord)));
   newStalls.forEach(e => console.log(`adding ${e.market} x:${e.coord.x}, y:${e.coord.y};`));
-  stalls.push(newStalls);
+  stalls.push(...newStalls);
 });
 
 function updateStallGfxs(shopBoxes) {
@@ -1116,7 +1127,7 @@ function getStartOrder(gfx) {
 }
 
 function compareCoords(coord1, coord2) {
-  return coord1.x === coord2.x && coord1.y === coord2.y;
+  return Math.abs(coord1.x - coord2.x) < epsilon && Math.abs(coord1.y - coord2.y) < epsilon;
 }
 
 function extractObjectsWithFields(o, f, acc) {

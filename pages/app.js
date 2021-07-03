@@ -100,6 +100,7 @@ function updateItemFilter() {
   let curio = document.getElementById('filter-item-curio').checked;
   let gilding = document.getElementById('filter-item-gilding').checked;
   let coinage = document.getElementById('filter-item-coinage').checked;
+  let elixir = document.getElementById('filter-item-elixir').checked;
 
   let filteredItems = itemsAll
     .filter(i => i.item)
@@ -119,6 +120,7 @@ function updateItemFilter() {
     .filter(i => !curio || i.item.additionalInfo.curio)
     .filter(i => !gilding || i.item.additionalInfo.gilding)
     .filter(i => !coinage || i.item.additionalInfo.coinage)
+    .filter(i => !elixir || (i.item.additionalInfo.contents && i.item.additionalInfo.contents.elixir))
     .filter(i => marketData[i.marketId].selected)
     ;
 
@@ -169,7 +171,7 @@ async function update() {
   let items = [];
   for (let i = 0; i < stallData.length; i++) {
     let s = stallData[i];
-    stalls.push({ coord: s.coord, market: s.market, id: i });
+    stalls.push({ coord: s.coord, market: s.market, id: i, timestamp: s.timestamp });
     s.rows.filter(e => e.item)
       .forEach(e => items.push({ ...e, stallId: i, marketId: marketByName(s.market).id }));
     items.forEach(e => e.leftNum = parseInt(e.left))
@@ -179,6 +181,7 @@ async function update() {
   updateState('stalls', stalls);
   updateState('itemsAll', items);
   updateState('items', items);
+  updateInfo();
   updateStall();
   updateMap(marketData[0]);
 }
@@ -207,6 +210,15 @@ function sortByStat(stat, asc) {
     let fepB = b.feps[stat + (asc ? '1' : '2')] || 0;
     return fepA > fepB ? -1 : 1;
   }
+}
+
+function updateInfo() {
+  const info = document.getElementById('info');
+  const timestamps = state.stalls.map(s => s.timestamp)
+    .filter(t => !isNaN(t));
+  console.log();
+  info.textContent = 'Data last updated at '
+    + new Date(Math.max(...timestamps)).toGMTString();
 }
 
 
@@ -329,8 +341,8 @@ function updateDetails(item) {
     if (info.armPen) {
       div.append(withAttribute(divWithText('Armor penetration:' + info.armPen * 100 + '%'), 'style', 'padding-left: 12px'));
     }
-    if (info.dur && info.maxDur) {
-      div.append(divWithText('Wear:' + info.dur + '/' + info.maxDur));
+    if (info.maxDur) {
+      div.append(divWithText('Wear:' + (info.dur || 0) + '/' + info.maxDur));
     }
     if (info.hungerReduction || info.fepBonus) {
       div.append(divWithText('Symbel:'));

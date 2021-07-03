@@ -1,4 +1,4 @@
-const local = true;
+const local = false;
 const url = local ? 'http://localhost:5000' : 'https://hnh-market.junespark.net';
 const svgns = "http://www.w3.org/2000/svg";
 let state = Object.freeze({
@@ -8,6 +8,7 @@ let state = Object.freeze({
 update();
 
 let scale = 3;
+let nodeSeq = 0;
 
 let marketData = [
   {
@@ -31,6 +32,7 @@ let marketData = [
 ];
 
 let walkPoints = [];
+let path = [];
 let selectedPoint = undefined;
 
 
@@ -55,7 +57,7 @@ function updateState(property, newData) {
 }
 
 async function update() {
-  const stallData = await sendRequest('stalls');
+  const stallData = await sendRequest('tmpStalls');
   let stalls = [];
   for (let i = 0; i < stallData.length; i++) {
     let s = stallData[i];
@@ -80,25 +82,25 @@ function initMap(market) {
   const pt = svg.createSVGPoint();
   let stalls = state.stalls.filter(s => s.market === market.name);
   stalls.forEach(s => {
-      let rect = document.createElementNS(svgns, 'rect');
-      let coords = interpolateCoordsToMap(s.coord, market);
-      let size = 6;
-      rect.classList = 'stall-rect';
-      rect.setAttribute('width', size);
-      rect.setAttribute('height', size);
-      rect.setAttribute('x', coords.x - size / 2);
-      rect.setAttribute('y', coords.y - size / 2);
-      svg.append(rect);
-      s.elem = rect;
-      s.ownerDistance = 0;
-      rect.addEventListener('click', (evt) => {
-        evt.stopPropagation();
-        attachStall(s, selectedPoint);
-      });
-      rect.addEventListener('mouseenter', (evt) => {
-        console.log(`x:${s.coord.x}, y:${s.coord.y}`);
-      });
+    let rect = document.createElementNS(svgns, 'rect');
+    let coords = interpolateCoordsToMap(s.coord, market);
+    let size = 6;
+    rect.classList = 'stall-rect';
+    rect.setAttribute('width', size);
+    rect.setAttribute('height', size);
+    rect.setAttribute('x', coords.x - size / 2);
+    rect.setAttribute('y', coords.y - size / 2);
+    svg.append(rect);
+    s.elem = rect;
+    s.ownerDistance = 0;
+    rect.addEventListener('click', (evt) => {
+      evt.stopPropagation();
+      attachStall(s, selectedPoint);
     });
+    rect.addEventListener('mouseenter', (evt) => {
+      console.log(`x:${s.coord.x}, y:${s.coord.y}`);
+    });
+  });
   map.addEventListener('click', (evt) => {
     pt.x = evt.clientX;
     pt.y = evt.clientY;
@@ -106,9 +108,12 @@ function initMap(market) {
     let coords = { x: cursorpt.x, y: cursorpt.y };
     let coordsG = interpolateCoordsToGame({ x: cursorpt.x, y: cursorpt.y }, market);
     let walkPoint = { coord: coordsG, stalls: [] };
-    stalls.filter(s => !s.ownerDistance || s.ownerDistance > distance(s.coord, walkPoint.coord))
-      .forEach(s => attachStall(s, walkPoint));
+    if (evt.shiftKey) {
+      stalls.filter(s => !s.ownerDistance || s.ownerDistance > distance(s.coord, walkPoint.coord))
+        .forEach(s => attachStall(s, walkPoint));
+    }
     walkPoint.elem = createPoint(coords, svg, walkPoint);
+    walkPoint.id = nodeSeq++;
     walkPoints.push(walkPoint);
     console.log("(" + coordsG.x + ", " + coordsG.y + ")");
   });
@@ -147,6 +152,9 @@ function createPoint(coords, svg, walkPoint) {
     evt.stopPropagation();
     if (evt.ctrlKey) {
       removePoint(walkPoint.coord);
+    } else if (evt.altKey) {
+      path.push(walkPoint.id);
+      updatePathContainer();
     } else {
       let wasSelected = walkPoint.selected;
       walkPoints.filter(p => p.selected)
@@ -224,4 +232,18 @@ function distance(coord1, coord2) {
   let distance = Math.sqrt(Math.pow(coord1.x - coord2.x, 2) + Math.pow(coord1.y - coord2.y, 2));
   console.log(`x1:${coord1.x}, y1:${coord1.y}, x2:${coord2.x}, y2:${coord2.y}, distance: ${distance}`)
   return distance;
+}
+
+function updatePathContainer() {
+  let pathContainer = document.getElementById('path-container');
+  pathContainer.textContent = '';
+  const pathRows = document.createDocumentFragment();
+  for (const node of path) {
+    const nodeElem = document.createElement('div');
+    const point = walkPoints.filter(p => p.id === node)[0];
+    nodeElem.textContent = `${point.coord.x.toFixed(2)}, ${point.coord.y.toFixed(2)}`;
+    nodeElem.classList = 'path-node';
+    pathRows.append(nodeElem);
+  }
+  pathContainer.append(pathRows);
 }
