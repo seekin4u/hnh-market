@@ -1,4 +1,4 @@
-const local = true;
+const local = false;
 const url = local ? 'http://localhost:5000' : 'https://hnh-market.junespark.net';
 const svgns = "http://www.w3.org/2000/svg";
 let state = Object.freeze({
