@@ -180,6 +180,7 @@ a {
   stroke: #000;
   stroke-width: 3;
   opacity: 1;
+  z-index: 10000;
 }
 
 .stall-rect {
@@ -187,6 +188,7 @@ a {
   stroke: #000;
   stroke-width: 2;
   opacity: 1;
+  z-index: 1000;
 }
 
 .stall-rect:hover, .marker:hover, .marker.selected, .stall-rect.selected {
@@ -218,7 +220,7 @@ img.img-left {
   right: 12px;
   top: 12px;
   width:300px;
-  height:324px;
+  height:340px;
   position: fixed;
   border: 1px solid rgba(0, 0, 0, .6);
   background-color: rgba(0, 0, 0, .3);
@@ -259,7 +261,7 @@ img.img-left {
 }
 #details-container {
   right: 12px;
-  top: 348px;
+  top: 366px;
   position: fixed;
   width:300px;
   opacity: 1;

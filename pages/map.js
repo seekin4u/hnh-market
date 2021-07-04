@@ -1,4 +1,4 @@
-const local = false;
+const local = true;
 const url = local ? 'http://localhost:5000' : 'https://hnh-market.junespark.net';
 const svgns = "http://www.w3.org/2000/svg";
 let state = Object.freeze({
@@ -64,7 +64,7 @@ async function update() {
     stalls.push({ coord: s.coord, market: s.market, id: i });
   }
   updateState('stalls', stalls);
-  initMap(marketData[0]);
+  initMap(marketData[1]);
 }
 
 

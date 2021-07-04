@@ -1,6 +1,7 @@
 const limit = 100;
-const local = false;
+const local = true;
 const url = local ? 'http://localhost:5000' : 'https://hnh-market.junespark.net';
+const svgns = "http://www.w3.org/2000/svg";
 
 let state = Object.freeze({
   items: null
@@ -26,6 +27,15 @@ let marketData = [
     mapUrl: 'https://vatsul.com/HnHMap/map?markers=fa6a8b97e9a7835588671662d5648fef36598c082c41309ed43172494f09e425#x=175.06&y=155.21&zoom=9',
     selected: true,
     id: 1
+  },
+  {
+    name: 'Sand Fury Market',
+    vcCoords: { x: 75, y: 149 },
+    scale: 0.35,
+    gfx: '/img/sand_fury.png',
+    mapUrl: 'https://vatsul.com/HnHMap/map?markers=da34211003aa7da7216630dc23f256daf807e289edb483dd863347e5fb04b142#x=-156.44&y=11.97&zoom=9',
+    selected: true,
+    id: 2
   }
 ];
 
@@ -184,6 +194,26 @@ async function update() {
   updateInfo();
   updateStall();
   updateMap(marketData[0]);
+  prepareRects(stalls);
+}
+
+function prepareRects(stalls) {
+  let map = document.getElementById('map-gfx');
+  let marker = document.getElementById('marker');
+  stalls
+    .forEach(s => {
+      let rect = document.createElementNS(svgns, 'rect');
+      let coords = interpolateCoords(s.coord, marketByName(s.market));
+      let size = 4;
+      rect.classList = 'stall-rect';
+      rect.setAttribute('display', 'none');
+      rect.setAttribute('width', size);
+      rect.setAttribute('height', size);
+      rect.setAttribute('x', coords.x - size / 2);
+      rect.setAttribute('y', coords.y - size / 2);
+      map.insertBefore(rect, marker);
+      s.elem = rect;
+    });
 }
 
 function sortBy(field, asc) {
@@ -276,6 +306,12 @@ function updateMap(market, stall) {
   map.style.background = 'url(' + market.gfx + ')';
   document.getElementById('map-title').textContent = market.name;
   document.getElementById('map-link').setAttribute('href', market.mapUrl);
+  state.stalls
+    .filter(s => s.market === market.name && s.elem)
+    .forEach(s => s.elem.setAttribute('display', 'block'));
+  state.stalls
+    .filter(s => s.market !== market.name && s.elem)
+    .forEach(s => s.elem.setAttribute('display', 'none'));
   if (!stall) return;
   let coords = interpolateCoords(stall.coord, market);
   let marker = document.getElementById('marker');
