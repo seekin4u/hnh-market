@@ -1013,7 +1013,7 @@ app.get('/api/tmpStalls', (req, res) => {
   res.json(stalls);
 });
 app.get('/api/stalls/clear', (req, res) => {
-  stalls = [];
+  stalls = loadedStalls ? loadedStalls : [];
   res.json({ data: 'ok' });
 });
 app.get('/api/stalls/publish', (req, res) => {
@@ -1067,7 +1067,8 @@ function updateStallGfxs(shopBoxes) {
 function mapGfx(gfx, name) {
   if (gfx === 'gfx/invobjs/gems/gemstone') {
     let gemNames = name.split(' ');
-    gfx = 'gfx/invobjs/gems/' + gemNames[0].toLowerCase() + '-' + gemNames[1].toLowerCase();
+    gfx = 'gfx/invobjs/gems/' + gemNames[0].toLowerCase()
+    + (gemNames.length > 2 ? '-' + gemNames[1].toLowerCase() : '');
   }
   if (gfx.endsWith('/con')) {
     gfx = gfx.replace('/con', '/cons');
