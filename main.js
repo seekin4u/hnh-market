@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const express = require('express')
-  , bodyParser = require('body-parser');
+  , bodyParser = require('body-parser')
+  , serveIndex = require('serve-index');
 const fs = require('fs');
 const sharp = require('sharp');
 
@@ -48,9 +49,9 @@ let loadedStalls = [];
 
 function readStalls() {
   if (!fs.existsSync(stallDataPath)) return [];
-  let stalls = JSON.parse(fs.readFileSync(stallDataPath));
-  stalls.forEach(s => updateStallGfxs(s.rows));
-  return stalls;
+  let st = JSON.parse(fs.readFileSync(stallDataPath));
+  st.forEach(s => updateStallGfxs(s.rows));
+  return st;
 }
 
 function saveStalls() {
@@ -994,6 +995,7 @@ function updateGfx(name) {
 app.use(express.static('pages'));
 app.use(bodyParser.json());
 app.use('/img/', express.static('img'));
+app.use('/img/', serveIndex('img'));
 
 app.get('/api/food', (req, res) => {
   res.json({ data: allFood });
