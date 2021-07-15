@@ -84,6 +84,29 @@ marketData.forEach(market => {
 });
 
 function updateItemFilter() {
+  let tools = [
+    'Bone Saw',
+    'Bucket',
+    "Butcher's Cleaver",
+    'Drowsing Rod',
+    'Frying Pan',
+    'Glass Blowing Rod',
+    'Irrlantern',
+    'Lantern',
+    'Metal Axe',
+    'Metal Saw',
+    'Metal Shovel',
+    'Pick Axe',
+    'Scythe',
+    'Shears',
+    'Sledgehammer',
+    'Stone Axe',
+    "Smithy's Hammer",
+    'Torch',
+    'Wicker Picker',
+    'Wooden Shovel',
+    "Woodsman's Axe"
+  ];
   let itemsAll = state.itemsAll;
   let stalls = state.stalls;
   let name = document.getElementById('filter-item-name').value;
@@ -111,12 +134,13 @@ function updateItemFilter() {
   let gilding = document.getElementById('filter-item-gilding').checked;
   let coinage = document.getElementById('filter-item-coinage').checked;
   let elixir = document.getElementById('filter-item-elixir').checked;
+  let tool = document.getElementById('filter-item-tool').checked;
 
   let filteredItems = itemsAll
     .filter(i => i.item)
     .filter(i => i.item.name.toLowerCase().includes(name))
     .filter(i => i.price.name.toLowerCase().includes(price))
-    .filter(i => !i.item.quality || i.item.quality >= qMin)
+    .filter(i => (i.item.quality ? i.item.quality : 0) >= qMin)
     .filter(i => !i.item.quality || i.item.quality <= qMax)
     .filter(i => i.price.quality >= pqMin)
     .filter(i => i.price.quality <= pqMax)
@@ -131,26 +155,33 @@ function updateItemFilter() {
     .filter(i => !gilding || i.item.additionalInfo.gilding)
     .filter(i => !coinage || i.item.additionalInfo.coinage)
     .filter(i => !elixir || (i.item.additionalInfo.contents && i.item.additionalInfo.contents.elixir))
+    .filter(i => !tool || tools.includes(i.item.name))
     .filter(i => marketData[i.marketId].selected)
     ;
+  let sorting = itemColumns.filter(i => i.lastSorted)[0];
+  if (sorting) {
+    filteredItems = filteredItems.sort(sortBy(sorting.code, sorting.sort));
+  }
 
 
   updateState('items', filteredItems);
   updateStall();
 }
 const itemColumns = [
-  { code: 'item.name', id: 'iName', sort: false },
-  { code: 'item.quality', id: 'iQuality', sort: false },
-  { code: 'price.name', id: 'price', sort: false },
-  { code: 'price.amount', id: 'pAmount', sort: false },
-  { code: 'price.quality', id: 'pQuality', sort: false },
-  { code: 'leftNum', id: 'iLeft', sort: false }
+  { code: 'item.name', id: 'iName', sort: false, lastSorted: false },
+  { code: 'item.quality', id: 'iQuality', sort: false, lastSorted: false },
+  { code: 'price.name', id: 'price', sort: false, lastSorted: false },
+  { code: 'price.amount', id: 'pAmount', sort: false, lastSorted: false },
+  { code: 'price.quality', id: 'pQuality', sort: false, lastSorted: false },
+  { code: 'leftNum', id: 'iLeft', sort: false, lastSorted: false }
 ];
 
 itemColumns.forEach(c => {
   document.getElementById(c.id).addEventListener('click', function (e) {
     state.items = state.items.sort(sortBy(c.code, c.sort));
     c.sort = !c.sort;
+    itemColumns.forEach(c => c.lastSorted = false);
+    itemColumns.lastSorted = true;
     updateStall();
   });
 });
@@ -183,7 +214,7 @@ async function update() {
     let s = stallData[i];
     stalls.push({ coord: s.coord, market: s.market, id: i, timestamp: s.timestamp });
     s.rows.filter(e => e.item)
-      .forEach(e => items.push({ ...e, stallId: i, marketId: marketByName(s.market).id }));
+      .forEach(e => items.push({ ...e, coord: s.coord, stallId: i, marketId: marketByName(s.market).id }));
     items.forEach(e => e.leftNum = parseInt(e.left))
     items.forEach(e => e.item.quality = e.item.quality || 0);
   }
@@ -281,14 +312,15 @@ function createItemRow(item) {
     pimg.setAttribute('src', '/img/' + item.price.gfx + '.png');
     pimg.setAttribute('height', '32px');
   }
-  tr.children[0].append(img);
-  tr.children[1].textContent = item.item.name;
-  tr.children[2].textContent = item.item.quality ? item.item.quality.toFixed(2) : '';
-  tr.children[3].append(pimg);
-  tr.children[4].textContent = item.price.name;
-  tr.children[5].textContent = item.price.amount;
-  tr.children[6].textContent = item.price.quality ? Math.round(item.price.quality) : 'Any';
-  tr.children[7].textContent = item.left;
+  tr.children[0].textContent = `${Math.round(item.coord.x)}, ${Math.round(item.coord.y)}`;
+  tr.children[1].append(img);
+  tr.children[2].textContent = item.item.name;
+  tr.children[3].textContent = item.item.quality ? item.item.quality.toFixed(2) : '';
+  tr.children[4].append(pimg);
+  tr.children[5].textContent = item.price.name;
+  tr.children[6].textContent = item.price.amount;
+  tr.children[7].textContent = item.price.quality ? Math.round(item.price.quality) : 'Any';
+  tr.children[8].textContent = item.left;
   tr.setAttribute('id', item.stallId);
   tr.addEventListener('mouseenter', function (ev) {
     updateDetails(item);

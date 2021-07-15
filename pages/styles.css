@@ -73,10 +73,15 @@ a {
 }
 
 .food-table>tbody>tr>td.stat,
-.food-table>thead>tr>th.stat {
+.food-table>thead>tr>th.stat,
+.food-table>tbody>tr>td.stall-id,
+.food-table>thead>tr>th.stall-id {
   padding: 0 0.2em;
   width: 4.2em;
   font-weight: bold;
+}
+.food-table>tbody>tr>td.stall-id {
+  font-size: xx-small;
 }
 
 .food-table>tbody>tr>td.statw,
