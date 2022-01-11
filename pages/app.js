@@ -11,15 +11,6 @@ update();
 
 let marketData = [
   {
-    name: 'Finloch Market',
-    vcCoords: { x: 150, y: 87 },
-    scale: 0.18,
-    gfx: '/img/finloch.png',
-    mapUrl: 'https://vatsul.com/HnHMap/map?markers=3e025001f3d8881739374ed96285647ab1c6d4879ed34fc5705a917d223d728f#x=73.96&y=320.68&zoom=9',
-    selected: true,
-    id: 0
-  },
-  {
     name: 'Linch Market',
     vcCoords: { x: 148, y: 150 },
     scale: 0.27,
@@ -27,15 +18,6 @@ let marketData = [
     mapUrl: 'https://vatsul.com/HnHMap/map?markers=fa6a8b97e9a7835588671662d5648fef36598c082c41309ed43172494f09e425#x=175.06&y=155.21&zoom=9',
     selected: true,
     id: 1
-  },
-  {
-    name: 'Sand Fury Market',
-    vcCoords: { x: 75, y: 149 },
-    scale: 0.35,
-    gfx: '/img/sand_fury.png',
-    mapUrl: 'https://vatsul.com/HnHMap/map?markers=da34211003aa7da7216630dc23f256daf807e289edb483dd863347e5fb04b142#x=-156.44&y=11.97&zoom=9',
-    selected: true,
-    id: 2
   }
 ];
 
