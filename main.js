@@ -933,49 +933,6 @@ const resources = {
 stalls = readStalls();
 loadedStalls = readStalls();
 
-fetch('https://hnhfood.vatsul.com/api/data/food-info2.json')
-  .then(res => res.json())
-  .then(data => {
-    let recipes = data.filter(e => !(e.ingredients.filter(i => i.percentage !== 100 && i.percentage !== 200).length > 0));
-    recipes = recipes.filter(r => r.hunger >= 0);
-    recipes = recipes.filter(r => r.ingredients.filter(i => !i.name.match(/^([A-Z]|0\.50).+/g)).length === 0);
-    recipes.forEach(r => {
-      let name = r.itemName;
-      name = name === 'Magpie' ? 'Magpie (Pie)' : name;
-      if (!name.match(/^([A-Z]|0\.50).+/g)) {
-        return;
-      }
-      let food = allFood.filter(f => f.name === name)[0];
-      if (!food) {
-        food = {
-          name: name,
-          res: r.resourceName,
-          recipes: []
-        };
-        allFood.push(food);
-      }
-      food.recipes.push({
-        ingredients: r.ingredients.map(i => mapIngredientName(i)),
-        feps: r.feps,
-        hunger: r.hunger,
-        energy: r.energy
-      });
-    });
-    allFood.sort((a, b) => a.name > b.name ? 1 : -1);
-    allFood.forEach(f => {
-      let path = './img/' + f.res + '.png';
-      downloadFile('http://www.havenandhearth.com/mt/r/' + f.res, path);
-    });
-    Object.keys(resources).forEach(function (k) {
-      let r = resources[k];
-      let path = './img/' + r.res + '.png';
-      downloadFile('http://www.havenandhearth.com/mt/r/' + r.res, path);
-      if (r.mod) {
-        path = './img/' + r.mod + '.png';
-        downloadFile('http://www.havenandhearth.com/mt/r/' + r.mod, path);
-      }
-    });
-  });
 
 function mapIngredientName(ingredient) {
   if (listContains(['Trombone chantrelle', 'Block of Trombone Chantrelle'], ingredient.name)) {
@@ -1070,7 +1027,7 @@ function mapGfx(gfx, name) {
   if (gfx === 'gfx/invobjs/gems/gemstone') {
     let gemNames = name.split(' ');
     gfx = 'gfx/invobjs/gems/' + gemNames[0].toLowerCase()
-    + (gemNames.length > 2 ? '-' + gemNames[1].toLowerCase() : '');
+      + (gemNames.length > 2 ? '-' + gemNames[1].toLowerCase() : '');
   }
   if (gfx.endsWith('/con')) {
     gfx = gfx.replace('/con', '/cons');
