@@ -1,6 +1,6 @@
 const limit = 100;
-const local = true;
-const url = local ? 'http://localhost:5000' : 'https://hnh-market.junespark.net';
+const local = false;
+const url = local ? 'http://localhost:5000' : 'http://168.119.119.252';
 const svgns = "http://www.w3.org/2000/svg";
 
 let state = Object.freeze({
