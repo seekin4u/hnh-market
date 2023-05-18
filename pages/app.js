@@ -1,6 +1,6 @@
 const limit = 100;
 const local = false;
-const url = local ? 'http://localhost:5000' : 'http://168.119.119.252';
+const url = local ? '' : '';
 const svgns = "http://www.w3.org/2000/svg";
 
 let state = Object.freeze({
