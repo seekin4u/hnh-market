@@ -3,170 +3,113 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HnH - market</title>
-  <link rel="stylesheet"
-        href="styles.css">
-  <script src="app.js"
-          defer></script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
 </head>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-NYDWD519PE"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  function gtag() { dataLayer.push(arguments); }
   gtag('js', new Date());
 
   gtag('config', 'G-NYDWD519PE');
 </script>
 
 <body>
-  <div id="app">
-    <div id="info"></div>
-    <div style="position:fixed; bottom:0; left:0;background:#2f3136;width:100%;padding:4px">If you want to add your market or suggest changes contact me at discord: Kerath#8367</div>
-    <table class="food-table"
-           style="max-width:1200px;float:left;padding-bottom:24px;">
-      <thead>
-        <tr>
-          <th class="id info">coords</th>
-          <th class="gfx"></th>
-          <th class="sortable name"
-              id="iName">name</th>
-          <th id="iQuality"
-              class="sortable info">quality</th>
-          <th class="gfx"></th>
-          <th id="price"
-              class="sortable name">price</th>
-          <th id="pAmount"
-              class="sortable info">amount</th>
-          <th id="pQuality"
-              class="sortable info">quality</th>
-          <th id="iLeft"
-              class="sortable info">left</th>
-        </tr>
-      </thead>
-      <tbody id="items"></tbody>
-    </table>
-    <div id="item-filter">
-      <input type="text"
-             class="text-filter"
-             id="filter-item-name"
-             placeholder="Name">
-      <input class="half text-filter"
-             type="text"
-             id="filter-item-qmin"
-             placeholder="Q min">
-      <input class="half text-filter"
-             type="text"
-             id="filter-item-qmax"
-             placeholder="Q max">
-      <input type="text"
-             class="text-filter"
-             id="filter-item-price"
-             placeholder="Price">
-      <input class="half text-filter"
-             type="text"
-             id="filter-item-pamin"
-             placeholder="amount min">
-      <input class="half text-filter"
-             type="text"
-             id="filter-item-pamax"
-             placeholder="amount max">
-      <input class="half text-filter"
-             type="text"
-             id="filter-item-pqmin"
-             placeholder="price Q min">
-      <input class="half text-filter"
-             type="text"
-             id="filter-item-pqmax"
-             placeholder="price Q max">
-      <div class="checkbox">
-        <input type="checkbox"
-               id="filter-item-gilded"
-               class="checkbox-filter"
-               name="gilded">
-        <label for="filter-item-gilded">Equipment</label>
+  <div id="app" style="margin:auto;">
+    <div style="position:fixed; bottom:0; left:0;background:#2f3136;width:60%;padding:4px">If you want to add your
+      market or suggest changes contact me at discord: Kerath#8367</div>
+
+    <div id="main-page" class="main-page" style="display:flex; justify-content: center;">
+      <div id="main-column" class="ramka" style="display: flex; flex-direction: column;">
+        <div id="info" style="text-align: center; margin: 2px 2px 2px 2px;display: flex; flex-direction: column;">
+        </div>
+        <table class="food-table"
+          style="max-width:800px;margin-left: auto; margin-right: auto;padding-bottom:24px; overflow-y: scroll;">
+          <thead>
+            <tr>
+              <th class="id info">coords</th>
+              <th class="gfx"></th>
+              <th class="sortable name" id="iName">name</th>
+              <th id="iQuality" class="sortable info">quality</th>
+              <th class="gfx"></th>
+              <th id="price" class="sortable name">price</th>
+              <th id="pAmount" class="sortable info">amount</th>
+              <th id="pQuality" class="sortable info">quality</th>
+              <!--<th id="iLeft" class="sortable info">left</th>-->
+            </tr>
+          </thead>
+          <tbody id="items"></tbody>
+        </table>
       </div>
-      <div class="checkbox">
-        <input type="checkbox"
-               id="filter-item-weapon"
-               class="checkbox-filter"
-               name="weapon">
-        <label for="filter-item-weapon">Weapon</label>
+      <div id="side-column" style="display: flex; flex-direction: column; width:300px;">
+        <div id="item-filter" class="ramka">
+          <input type="text" class="text-filter" id="filter-item-name" placeholder="Name">
+          <input class="half text-filter" type="text" id="filter-item-qmin" placeholder="Q min">
+          <input class="half text-filter" type="text" id="filter-item-qmax" placeholder="Q max">
+          <input type="text" class="text-filter" id="filter-item-price" placeholder="Price">
+          <input class="half text-filter" type="text" id="filter-item-pamin" placeholder="amount min">
+          <input class="half text-filter" type="text" id="filter-item-pamax" placeholder="amount max">
+          <input class="half text-filter" type="text" id="filter-item-pqmin" placeholder="price Q min">
+          <input class="half text-filter" type="text" id="filter-item-pqmax" placeholder="price Q max">
+          <div class="checkbox">
+            <input type="checkbox" id="filter-item-gilded" class="checkbox-filter" name="gilded">
+            <label for="filter-item-gilded">Equipment</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="filter-item-weapon" class="checkbox-filter" name="weapon">
+            <label for="filter-item-weapon">Weapon</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="filter-item-armor" class="checkbox-filter" name="armor">
+            <label for="filter-item-armor">Armor</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="filter-item-food" class="checkbox-filter" name="food">
+            <label for="filter-item-food">Food</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="filter-item-symbel" class="checkbox-filter" name="symbel">
+            <label for="filter-item-symbel">Symbel</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="filter-item-curio" class="checkbox-filter" name="curio">
+            <label for="filter-item-curio">Curio</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="filter-item-gilding" class="checkbox-filter" name="gilding">
+            <label for="filter-item-gilding">Gilding</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="filter-item-coinage" class="checkbox-filter" name="coinage">
+            <label for="filter-item-coinage">Coin</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="filter-item-elixir" class="checkbox-filter" name="elixir">
+            <label for="filter-item-elixir">Elixir</label>
+          </div>
+          <div class="checkbox">
+            <input type="checkbox" id="filter-item-tool" class="checkbox-filter" name="tool">
+            <label for="filter-item-tool">Tool</label>
+          </div>
+          <hr
+            style="float:left; width:298px; height:1px; border-width:0; color: rgba(195, 195, 195, 0.6); background-color: rgba(195, 195, 195, 0.6);" />
+          <div id="market-filters"></div>
+        </div>
+        <div id="map" class="ramka">
+          <div id="map-title">Market</div>
+          <div id="map-details">Market can be found <a id="map-link">here</a></div>
+          <svg id="map-gfx" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            style="opacity:0.9; height:300px; width:300px; display:block;">
+            <circle id="marker" stroke-opacity="1" class="marker"></circle>
+          </svg>
+        </div>
+        <div id="details-container" class="ramka">
+          Hover item for details
+        </div>
       </div>
-      <div class="checkbox">
-        <input type="checkbox"
-               id="filter-item-armor"
-               class="checkbox-filter"
-               name="armor">
-        <label for="filter-item-armor">Armor</label>
-      </div>
-      <div class="checkbox">
-        <input type="checkbox"
-               id="filter-item-food"
-               class="checkbox-filter"
-               name="food">
-        <label for="filter-item-food">Food</label>
-      </div>
-      <div class="checkbox">
-        <input type="checkbox"
-               id="filter-item-symbel"
-               class="checkbox-filter"
-               name="symbel">
-        <label for="filter-item-symbel">Symbel</label>
-      </div>
-      <div class="checkbox">
-        <input type="checkbox"
-               id="filter-item-curio"
-               class="checkbox-filter"
-               name="curio">
-        <label for="filter-item-curio">Curio</label>
-      </div>
-      <div class="checkbox">
-        <input type="checkbox"
-               id="filter-item-gilding"
-               class="checkbox-filter"
-               name="gilding">
-        <label for="filter-item-gilding">Gilding</label>
-      </div>
-      <div class="checkbox">
-        <input type="checkbox"
-               id="filter-item-coinage"
-               class="checkbox-filter"
-               name="coinage">
-        <label for="filter-item-coinage">Coin</label>
-      </div>
-      <div class="checkbox">
-        <input type="checkbox"
-               id="filter-item-elixir"
-               class="checkbox-filter"
-               name="elixir">
-        <label for="filter-item-elixir">Elixir</label>
-      </div>
-      <div class="checkbox">
-        <input type="checkbox"
-               id="filter-item-tool"
-               class="checkbox-filter"
-               name="tool">
-        <label for="filter-item-tool">Tool</label>
-      </div>
-      <hr style="float:left; width:298px; height:1px; border-width:0; color: rgba(195, 195, 195, 0.6); background-color: rgba(195, 195, 195, 0.6);"/>
-      <div id="market-filters"></div>
-    </div>
-    <div id="details-container">
-      Hover item for details
-    </div>
-    <div id="map"
-         style="float:right; width:300px;">
-         <div id="map-title">Market</div>
-         <div id="map-details">Market can be found <a id="map-link">here</a></div>
-         <svg id="map-gfx" xmlns="http://www.w3.org/2000/svg"
-           xmlns:xlink="http://www.w3.org/1999/xlink"
-           style="opacity:0.9; height:300px; width:300px; display:block;">
-        <circle id="marker"
-                stroke-opacity="1"
-                class="marker"></circle>
-      </svg>
     </div>
   </div>
 

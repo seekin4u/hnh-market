@@ -1,5 +1,5 @@
 const limit = 100;
-const local = false;
+const local = true;
 const url = local ? 'http://localhost:5000' : 'https://hnh-market.junespark.net';
 const svgns = "http://www.w3.org/2000/svg";
 
@@ -11,10 +11,10 @@ update();
 
 let marketData = [
   {
-    name: 'Linch Market',
-    vcCoords: { x: 148, y: 150 },
-    scale: 0.27,
-    gfx: '/img/linchik.png',
+    name: '✦ Midnight Hoggers ✦',
+    vcCoords: { x: 155, y: 170 }, //картинка 300*300, примерно виладж центр угадываем по пикселям
+    scale: 0.092, //меняем в меньшую сторону что бы сталы уплотнялись
+    gfx: '/img/hoggy.png',
     mapUrl: 'https://vatsul.com/HnHMap/map?markers=fa6a8b97e9a7835588671662d5648fef36598c082c41309ed43172494f09e425#x=175.06&y=155.21&zoom=9',
     selected: true,
     id: 1
@@ -185,6 +185,10 @@ function updateState(property, newData) {
     ...state,
     [property]: newData
   });
+}
+
+function marketByName(marketName) {
+  return marketData.filter(e => e.name === marketName)[0];
 }
 
 async function update() {
@@ -567,6 +571,3 @@ function interpolateCoords(coords, market) {
   }
 }
 
-function marketByName(marketName) {
-  return marketData.filter(e => e.name === marketName)[0];
-}
