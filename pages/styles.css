@@ -215,16 +215,16 @@ a {
 }
 
 .ramka {
-  margin: 4px 0 2px 2px;
+  margin: 2px 2px 2px 2px;
   border: 10px solid transparent;
   border-image: url(img/ramka.png) 30 stretch;
   background-clip: padding-box;
   background-color: rgb(39, 38, 38);
 }
 
-.main-page {
+#main-page {
   height: 100vh;
-  min-height: 850px;
+  min-height: 500px;
 }
 
 img.img-left {
@@ -246,6 +246,10 @@ img.img-left {
   text-shadow: -3px 0 black, 0 3px black, 3px 0 black, 0 -3px black;
 }
 
+#main-column {
+  width: 45%;
+}
+
 #side-column {
   display: flex;
   flex-direction: column;
@@ -258,7 +262,7 @@ img.img-left {
   right: 12px;
   top: 12px;
   width: 300px;
-  height: 340px;
+  min-height: 340px;
   background-color: rgba(0, 0, 0, .3);
 }
 

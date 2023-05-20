@@ -14,27 +14,34 @@
 
 <body>
   <div id="app" style="margin:auto;">
-    <div id="main-page" class="main-page" style="display:flex; justify-content: center;">
-      <div id="main-column" class="ramka" style="display: flex; flex-direction: column;">
-        <div id="info" style="text-align: center; margin: 2px 2px 2px 2px;display: flex; flex-direction: column;">
+    <div id="main-page" style="display:flex; justify-content: center;">
+
+      <div id="main-column" style="display: flex; flex-direction: column;">
+        <div class="ramka" style="text-align: center; flex-wrap: nowrap;">
+          Welcome. Welcome to Midnight Hoggers. You have chose it, or been chosen, to relocate to one of our finest
+          remaining true market.
         </div>
-        <table class="food-table"
-          style="max-width:800px;margin-left: auto; margin-right: auto;padding-bottom:24px; overflow-y: scroll;">
-          <thead>
-            <tr>
-              <th class="id info">coords</th>
-              <th class="gfx"></th>
-              <th class="sortable name" id="iName">name</th>
-              <th id="iQuality" class="sortable info">quality</th>
-              <th class="gfx"></th>
-              <th id="price" class="sortable name">price</th>
-              <th id="pAmount" class="sortable info">amount</th>
-              <th id="pQuality" class="sortable info">quality</th>
-              <th id="iLeft" class="sortable info">left</th>
-            </tr>
-          </thead>
-          <tbody id="items"></tbody>
-        </table>
+        <div class="ramka" style="overflow-y: scroll;">
+          <div id="info" style="text-align: center;display: flex; flex-direction: column;">
+            <!--this is for "Last Update text"-->
+          </div>
+          <table class="food-table" style="max-width:800px;margin-left: auto; margin-right: auto;padding-bottom:24px;">
+            <thead>
+              <tr>
+                <th class="id info">coords</th>
+                <th class="gfx"></th>
+                <th class="sortable name" id="iName">name</th>
+                <th id="iQuality" class="sortable info">quality</th>
+                <th class="gfx"></th>
+                <th id="price" class="sortable name">price</th>
+                <th id="pAmount" class="sortable info">amount</th>
+                <th id="pQuality" class="sortable info">quality</th>
+                <th id="iLeft" class="sortable info">left</th>
+              </tr>
+            </thead>
+            <tbody id="items"></tbody>
+          </table>
+        </div>
       </div>
       <div id="side-column" style="display: flex; flex-direction: column; width:300px;">
         <div id="item-filter" class="ramka">
