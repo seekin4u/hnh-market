@@ -27,12 +27,12 @@ a {
 .food-table {
   display: flex;
   flex-direction: column;
-  border-spacing: 0;
+
   text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
 
 .food-table>tbody>tr {
-  padding: 0;
+
   margin: 0;
 }
 
@@ -67,7 +67,7 @@ a {
 }
 
 .food-table>tbody>tr>td {
-  padding: 0;
+
   margin: 0;
   border-bottom: 1px solid rgba(0, 0, 0, .3);
   text-align: center;
@@ -81,8 +81,8 @@ a {
 .food-table>thead>tr>th.stat,
 .food-table>tbody>tr>td.stall-id,
 .food-table>thead>tr>th.stall-id {
-  padding: 0 0.2em;
-  width: 4.2em;
+
+
   font-weight: bold;
 }
 
@@ -92,8 +92,8 @@ a {
 
 .food-table>tbody>tr>td.statw,
 .food-table>thead>tr>th.statw {
-  padding: 0 0.2em;
-  width: 5.2em;
+
+
   font-weight: bold;
 }
 
@@ -102,7 +102,7 @@ a {
 }
 
 .food-table>tbody>tr>td.img {
-  text-align: right;
+  text-align: center;
   width: 72px;
 }
 
@@ -262,7 +262,7 @@ img.img-left {
   right: 12px;
   top: 12px;
   width: 300px;
-  min-height: 340px;
+  min-height: 260px;
   background-color: rgba(0, 0, 0, .3);
 }
 

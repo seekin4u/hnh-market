@@ -28,15 +28,15 @@
           <table class="food-table" style="max-width:800px;margin-left: auto; margin-right: auto;padding-bottom:24px;">
             <thead>
               <tr>
-                <th class="id info">coords</th>
-                <th class="gfx"></th>
-                <th class="sortable name" id="iName">name</th>
-                <th id="iQuality" class="sortable info">quality</th>
-                <th class="gfx"></th>
-                <th id="price" class="sortable name">price</th>
-                <th id="pAmount" class="sortable info">amount</th>
-                <th id="pQuality" class="sortable info">quality</th>
-                <th id="iLeft" class="sortable info">left</th>
+                <th class="id info" style="width:10%;">coords</th>
+                <th class="gfx" style="width:5%;"></th>
+                <th class="sortable name" id="iName" style="width:25%;">name</th>
+                <th id="iQuality" class="sortable info" style="width:10%;">quality</th>
+                <th class="gfx" style="width:5%;"></th>
+                <th id="price" class="sortable name" style="width:15%;">price</th>
+                <th id="pAmount" class="sortable info" style="width:7.5%;">amount</th>
+                <th id="pQuality" class="sortable info" style="width:7.5%;">quality</th>
+                <th id="iLeft" class="sortable info" style="width:15%;">left</th>
               </tr>
             </thead>
             <tbody id="items"></tbody>
@@ -93,9 +93,7 @@
             <input type="checkbox" id="filter-item-tool" class="checkbox-filter" name="tool">
             <label for="filter-item-tool">Tool</label>
           </div>
-          <hr
-            style="float:left; width:298px; height:1px; border-width:0; color: rgba(195, 195, 195, 0.6); background-color: rgba(195, 195, 195, 0.6);" />
-          <div id="market-filters"></div>
+
         </div>
         <div id="map" class="ramka">
           <div id="map-title">Market</div>
@@ -120,15 +118,15 @@
   </template>
   <template id="item">
     <tr>
-      <td class="stall-id"></td>
-      <td class="img"></td>
-      <td style="font-weight: bold;"></td>
-      <td class="stat"></td>
-      <td class="img"></td>
-      <td style="font-weight: bold;"></td>
-      <td class="stat"></td>
-      <td class="stat"></td>
-      <td class="stat"></td>
+      <td class="stall-id" style="width:10%;"></td>
+      <td class="img" style="width:5%;"></td>
+      <td style="font-weight: bold; width:25%;"></td>
+      <td class="stat" style="width:10%;"></td>
+      <td class="img" style="width:5%;"></td>
+      <td style="font-weight: bold; width:15%;"></td>
+      <td class="stat" style="width:7.5%;"></td>
+      <td class="stat" style="width:7.5%;"></td>
+      <td class="stat" style="width:15%;"></td>
     </tr>
   </template>
 </body>
