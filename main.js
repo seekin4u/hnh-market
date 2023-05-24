@@ -975,7 +975,7 @@ app.get('/api/stalls/clear', (req, res) => {
   stalls = loadedStalls ? loadedStalls : [];
   res.json({ data: 'ok' });
 });
-app.get('/api/stalls/publish', (req, res) => {
+app.get('/api/stalls/stalls/publish', (req, res) => {
   loadedStalls = [...stalls];
   saveStalls();
   res.json({ data: 'ok' });
